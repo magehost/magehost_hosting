@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<config>
+    <modules>
+        <JeroenVermeulen_Hosting>
+            <version>0.1.0</version>
+        </JeroenVermeulen_Hosting>
+    </modules>
+    <global>
+        <models>
+            <jeroenvermeulen_hosting>
+                <class>JeroenVermeulen_Hosting_Model</class>
+            </jeroenvermeulen_hosting>
+        </models>
+        <helpers>
+            <jeroenvermeulen_hosting>
+                <class>JeroenVermeulen_Hosting_Helper</class>
+            </jeroenvermeulen_hosting>
+        </helpers>
+    </global>
+    <adminhtml>
+        <events>
+            <clean_media_cache_after>
+                <observers>
+                    <jeroenvermeulen_hosting>
+                        <class>JeroenVermeulen_Hosting_Model_Observer</class>
+                        <method>cleanMediaCacheAfter</method>
+                        <type>singleton</type>
+                    </jeroenvermeulen_hosting>
+                </observers>
+            </clean_media_cache_after>
+        </events>
+    </adminhtml>
+</config>
