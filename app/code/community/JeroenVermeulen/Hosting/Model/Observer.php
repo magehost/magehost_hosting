@@ -60,7 +60,7 @@ class JeroenVermeulen_Hosting_Model_Observer
                 Mage::log( sprintf("%s::%s: Passing flush to %s", __CLASS__, __FUNCTION__, $nodeLocation) );
                 try {
                     $client = new Zend_Soap_Client($nodeWsdl);
-                    $client->setWsdlCache(WSDL_CACHE_NONE);
+                    //$client->setWsdlCache(WSDL_CACHE_NONE);
                     $client->setLocation($nodeLocation);
                     $client->setStreamContext( stream_context_create( array(
                             'ssl'  => array( 'verify_peer'          => false,
