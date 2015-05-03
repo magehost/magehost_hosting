@@ -63,7 +63,7 @@
                 <enable_pass_cache_clean>0</enable_pass_cache_clean>
                 <http_nodes>node.domain.tld:443</http_nodes>
                 <api_user>cluster</api_user>
-                <api_key>changeme</api_key>
+                <api_key>change_me</api_key>
             </cluster>
         </jeroenvermeulen_hosting>
     </default>

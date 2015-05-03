@@ -1,32 +1,56 @@
 <?php
+/**
+ * JeroenVermeulen_Hosting
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade this Module to
+ * newer versions in the future.
+ *
+ * @category     JeroenVermeulen
+ * @package      JeroenVermeulen_Hosting
+ * @copyright    Copyright (c) 2015 Jeroen Vermeulen (http://www.jeroenvermeulen.eu)
+ */
 
 class JeroenVermeulen_Hosting_Model_Observer
 {
     const CONFIG_SECTION  = 'jeroenvermeulen_hosting';
 
     /**
+     * Event listener to clean minified JS and CSS files in 'mini' directory.
+     * This is only necessary for vhosts running on Nginx with automagic minify.
+     *
      * @param Varien_Event_Observer $observer
      */
-    public function cleanMediaCacheAfter( $observer ) {
+    public function cleanMediaCacheAfter( /** @noinspection PhpUnusedParameterInspection */ $observer ) {
         $miniDir = Mage::getBaseDir('base') . DIRECTORY_SEPARATOR . 'mini';
         if ( is_dir($miniDir) ) {
             $success = $this->clean_dir_content( $miniDir );
+            /** @var Mage_Adminhtml_Model_Session $adminSession */
+            $adminSession = Mage::getSingleton('adminhtml/session');
             if ( $success ) {
-                Mage::getSingleton('adminhtml/session')->addSuccess( sprintf("Directory '%s' has been cleaned.",$miniDir) );
+                $adminSession->addSuccess( sprintf("Directory '%s' has been cleaned.",$miniDir) );
             } else {
-                Mage::getSingleton('adminhtml/session')->addError( sprintf("Error cleaning directory '%s'.",$miniDir) );
+                $adminSession->addError( sprintf("Error cleaning directory '%s'.",$miniDir) );
             }
         }
     }
 
     /**
+     * Event listener for cache backend cleans.
+     * The event 'jv_clean_backend_cache' can only be triggered if cache backend used in local.xml:
+     *    'JeroenVermeulen_Cm_Cache_Backend_File'
+     * or 'JeroenVermeulen_Cm_Cache_Backend_Redis'
+     *
      * @param Varien_Event_Observer $observer
      */
     public function jvCleanBackendCache( $observer ) {
         if ( Mage::getStoreConfigFlag(self::CONFIG_SECTION.'/cluster/enable_pass_cache_clean') &&
              ! Mage::registry('JeroenVermeulen_cacheClean_via_Api') ) {
             $localHostname = Mage::helper('jeroenvermeulen_hosting')->getLocalHostname();
+            /** @noinspection PhpUndefinedMethodInspection */
             $transport = $observer->getTransport();
+            /** @noinspection PhpUndefinedMethodInspection */
             Mage::log( sprintf( "Cache Clean Event. Mode '%s', tags '%s'.",
                                 $transport->getMode(), implode(',',$transport->getTags()) ) );
             $nodes = Mage::getStoreConfig(self::CONFIG_SECTION.'/cluster/http_nodes');
@@ -70,7 +94,9 @@ class JeroenVermeulen_Hosting_Model_Observer
                     ) ) );
                     $apiUser = Mage::getStoreConfig(self::CONFIG_SECTION.'/cluster/api_user');
                     $apiKey  = Mage::getStoreConfig(self::CONFIG_SECTION.'/cluster/api_key');
+                    /** @noinspection PhpUndefinedMethodInspection */
                     $sessionId =  $client->login( $apiUser, $apiKey );
+                    /** @noinspection PhpUndefinedMethodInspection */
                     $client->call( $sessionId, 'jvhosting.cacheClean',
                                    array( $transport->getMode(), $transport->getTags(), $localHostname) );
                 } catch ( Exception $e ) {
@@ -82,6 +108,7 @@ class JeroenVermeulen_Hosting_Model_Observer
 
     /**
      * Does not delete the dir itself, only its contents, recursive.
+     *
      * @param string $dir
      * @return bool
      * @throws Exception
