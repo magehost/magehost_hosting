@@ -20,7 +20,7 @@ class JeroenVermeulen_Hosting_Model_Api extends Mage_Api_Model_Resource_Abstract
             Mage::log( $message );
             $this->_fault('command_failed', $message);
         }
-        return array($result,$message);
+        return $message;
     }
 
 }
