@@ -49,8 +49,9 @@ class JeroenVermeulen_Hosting_Model_Observer
                 try {
                     // TODO: Sometimes this does not work and a 302 is returned
                     $client = new Zend_Soap_Client();
-                    $client->setUri($nodeWsdl);
-                    $client->setLocation($nodeLocation);
+                    $client->setWsdl($nodeWsdl);
+                    $client->setUri($nodeLocation);
+                    //$client->setLocation($nodeLocation);
                     $client->setWsdlCache(WSDL_CACHE_NONE);
                     $headers = array('Host: '.$urlData['host']);
                     if ( $scheme != $urlData['scheme'] ) {
@@ -64,7 +65,9 @@ class JeroenVermeulen_Hosting_Model_Observer
                                 'ssl' => array( 'verify_peer' => false,
                                                 'allow_self_signed' => true ),
                                 'http' => array( 'header' => $headers,
-                                                 'follow_location' => false )
+                                                 'follow_location' => false,
+                                                 'curl_verify_ssl_host' => false,
+                                                 'curl_verify_ssl_peer' => false )
                             )
                         )
                     );
