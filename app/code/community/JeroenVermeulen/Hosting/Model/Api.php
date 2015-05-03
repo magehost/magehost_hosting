@@ -14,8 +14,11 @@ class JeroenVermeulen_Hosting_Model_Api extends Mage_Api_Model_Resource_Abstract
             Mage::register('JeroenVermeulen_cacheClean_via_Api',true);
             try {
                 $result = Mage::app()->getCacheInstance()->getFrontEnd()->getBackend()->clean($mode, $tags);
-                $message = sprintf("%s::%s: Clean command returned '%s'.", __CLASS__, __FUNCTION__, $result);
-                Mage::log( $message );
+                if ( !$result ) {
+                    $message = sprintf("%s::%s: Clean command returned '%s'.", __CLASS__, __FUNCTION__, $result);
+                    Mage::log( $message );
+                    $this->_fault('command_failed', $message);
+                }
             } catch (Mage_Core_Exception $e) {
                 $message = sprintf("%s::%s: ERROR %s", __CLASS__, __FUNCTION__, $e->getMessage());
                 Mage::log( $message );
