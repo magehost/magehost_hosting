@@ -42,13 +42,14 @@ class JeroenVermeulen_Hosting_Model_Observer
                         $scheme = 'http';
                     }
                 }
-                $nodeWdsl = $scheme."://".$node.$urlData['path'].'?'.$urlData['query'];
+                $nodeWsdl = $scheme."://".$node.$urlData['path'].'?'.$urlData['query'];
                 $nodeLocation = $scheme."://".$node.$urlData['path'];
                 Mage::log( sprintf("%s::%s: Passing flush to %s", __CLASS__, __FUNCTION__, $nodeLocation) );
                 try {
                     $client = new Zend_Soap_Client();
-                    $client->setUri($nodeWdsl);
+                    $client->setUri($nodeWsdl);
                     $client->setLocation($nodeLocation);
+                    $client->setWsdlCache(WSDL_CACHE_NONE);
                     $client->setStreamContext(
                         stream_context_create( array(
                                 'ssl' => array( 'verify_peer' => false,
