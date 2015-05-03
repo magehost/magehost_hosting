@@ -34,40 +34,33 @@ class JeroenVermeulen_Hosting_Model_Observer
             $urlData = parse_url($url);
             $nodeList = explode("\n",$nodes);
             $localIPs = Mage::helper('jeroenvermeulen_hosting')->getLocalIPs();
-    var_dump($localIPs);
             foreach ( $nodeList as $node ) {
-                $nodeIP =  gethostbyname( $node );
-    var_dump($nodeIP);
-                if ( $node == $localHostname || in_array($nodeIP,$localIPs) ) {
-                    continue;
-                }
                 $node = trim($node);
                 $nodeSplit = explode(':',$node);
-                $scheme = $urlData['scheme'];
-                if ( !empty($nodeSplit[1]) ) {
-                    if ( 443 == $nodeSplit[1] ) {
-                        $scheme = 'https';
-                        $node = $nodeSplit[0];
-                    }
-                    elseif ( 80 == $nodeSplit[1] ) {
-                        $scheme = 'http';
-                        $node = $nodeSplit[0];
-                    }
+                $nodeHost = $nodeSplit[0];
+                $nodePort = (empty($nodeSplit[1])) ? 80 : intval($nodeSplit[1]);
+                $nodeIP =  gethostbyname( $nodeHost );
+                if ( $nodeHost == $localHostname || in_array($nodeIP,$localIPs) ) {
+                    continue;
                 }
-                $nodeLocation = $scheme.'://'.$node.$urlData['path'];
+                $headers = array();
+                $headers[] = 'Host: '.$urlData['host'];
+                $nodeScheme = $urlData['scheme'];
+                if ( 443 == $nodePort && 'http' == $nodeScheme ) {
+                    $nodeScheme = 'https';
+                    $headers[] = 'X-Forwarded-Proto: http';
+                }
+                elseif ( 80 == $nodePort && 'https' == $nodeScheme ) {
+                    $nodeScheme = 'http';
+                    $headers[] = 'X-Forwarded-Proto: https';
+                    $headers[] = 'Ssl-Offloaded: 1';
+                }
+                $nodeLocation = $nodeScheme.'://'.$node.$urlData['path'];
                 $nodeWsdl     = $nodeLocation.'?wsdl=1';
                 Mage::log( sprintf("%s::%s: Passing flush to %s", __CLASS__, __FUNCTION__, $nodeLocation) );
                 try {
                     $client = new Zend_Soap_Client($nodeWsdl);
                     $client->setLocation($nodeLocation);
-                    $headers = array();
-                    $headers[] = 'Host: staging.maxitoys.be';
-                    if ( $scheme != $urlData['scheme'] ) {
-                        $headers[] = 'X-Forwarded-Proto: '.$urlData['scheme'];
-                        if ( 'https' == $urlData['scheme'] ) {
-                            $headers[] = 'Ssl-Offloaded: 1';
-                        }
-                    }
                     $client->setStreamContext( stream_context_create( array(
                             'ssl'  => array( 'verify_peer'          => false,
                                              'allow_self_signed'    => true ),
