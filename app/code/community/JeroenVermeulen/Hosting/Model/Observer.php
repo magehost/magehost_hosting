@@ -30,7 +30,8 @@ class JeroenVermeulen_Hosting_Model_Observer
             $nodes = Mage::getStoreConfig(self::CONFIG_SECTION.'/cluster/http_nodes');
             $url = Mage::getUrl('api/v2_soap',array('_query'=>'wsdl'));
             $urlData = parse_url($url);
-            foreach ( explode("\n",$nodes) as $node) {
+            $nodeList = explode("\n",$nodes);
+            foreach ( $nodeList as $node ) {
                 $node = trim($node);
                 $nodeSplit = explode(':',$node);
                 $scheme = $urlData['scheme'];
@@ -60,6 +61,7 @@ class JeroenVermeulen_Hosting_Model_Observer
                     );
                     $sessionId =  $client->login( 'soapuser', 'soappass' ); // TODO
                     $client->jvHostingCacheClean( $sessionId, $transport->getMode(), $transport->getTags() );
+                    unset($client);
                 } catch ( Exception $e ) {
                     Mage::log( sprintf("%s::%s: ERROR %s", __CLASS__, __FUNCTION__, $e->getMessage()) );
                 }
