@@ -51,7 +51,7 @@ class JeroenVermeulen_Hosting_Model_Observer
                     $client = new Zend_Soap_Client();
                     $client->setWsdl($nodeWsdl);
                     $client->setUri($nodeLocation);
-                    //$client->setLocation($nodeLocation);
+                    $client->setLocation($nodeLocation);
                     $client->setWsdlCache(WSDL_CACHE_NONE);
                     $headers = array('Host: '.$urlData['host']);
                     if ( $scheme != $urlData['scheme'] ) {
