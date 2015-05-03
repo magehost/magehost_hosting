@@ -63,7 +63,8 @@ class JeroenVermeulen_Hosting_Model_Observer
                         stream_context_create( array(
                                 'ssl' => array( 'verify_peer' => false,
                                                 'allow_self_signed' => true ),
-                                'http' => array( 'header' => $headers )
+                                'http' => array( 'header' => $headers,
+                                                 'follow_location' => false )
                             )
                         )
                     );
