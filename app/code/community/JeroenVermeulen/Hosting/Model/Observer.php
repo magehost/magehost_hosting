@@ -43,8 +43,6 @@ class JeroenVermeulen_Hosting_Model_Observer
                         $scheme = 'http';
                     }
                 }
-//                $nodeWsdl     = $scheme."://".$node.$urlData['path'].'?wsdl=1';
-//                $nodeLocation = $scheme."://".$node.$urlData['path'];
                 $nodeLocation = 'http://'.$node.'/api/v2_soap/';
                 $nodeWsdl     = $nodeLocation.'?wsdl=1';
                 Mage::log( sprintf("%s::%s: Passing flush to %s", __CLASS__, __FUNCTION__, $nodeLocation) );
@@ -83,29 +81,25 @@ class JeroenVermeulen_Hosting_Model_Observer
                     $client->jvHostingCacheClean( $sessionId, $transport->getMode(), $transport->getTags() );
                     */
 
-                    // TODO: Sometimes this does not work and a 302 is returned
                     $client = new Zend_Soap_Client($nodeWsdl);
-                    //$client->setWsdl($nodeWsdl);
-                    //$client->setUri($nodeLocation);
                     $client->setLocation($nodeLocation);
-                    $client->setWsdlCache(WSDL_CACHE_NONE);
+//                    $client->setWsdlCache(WSDL_CACHE_NONE);
                     $headers = array();
                     $headers[] = 'Host: staging.maxitoys.be';
-                    $headers[] = 'X-Forwarded-Proto: https';
-                    $headers[] = 'Ssl-Offloaded: 1';
+                    if ( $scheme != $urlData['scheme'] ) {
+                        $headers[] = 'X-Forwarded-Proto: '.$urlData['scheme'];
+                        if ( 'https' == $urlData['scheme'] ) {
+                            $headers[] = 'Ssl-Offloaded: 1';
+                        }
+                    }
                     $client->setStreamContext( stream_context_create( array(
-                            'ssl' => array( 'verify_peer' => false,
-                                            'allow_self_signed' => true ),
-                            'http' => array( 'header' => implode("\n",$headers),
-                                             'follow_location' => 0,
-                                             'curl_verify_ssl_host' => false,
-                                             'curl_verify_ssl_peer' => false )
-                            )
-                        )
-                    );
+                            'ssl'  => array( 'verify_peer'          => false,
+                                             'allow_self_signed'    => true ),
+                            'http' => array( 'header'               => implode("\n",$headers),
+                                             'follow_location'      => 0 )
+                    ) ) );
                     $sessionId =  $client->login( 'soapuser', 'soappass' ); // TODO
                     $client->jvHostingCacheClean( $sessionId, $transport->getMode(), $transport->getTags() );
-                    unset($client);
                 } catch ( Exception $e ) {
                     Mage::log( sprintf("%s::%s: ERROR %s", __CLASS__, __FUNCTION__, $e->getMessage()) );
                 }
