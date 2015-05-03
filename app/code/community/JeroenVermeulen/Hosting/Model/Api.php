@@ -4,8 +4,7 @@ class JeroenVermeulen_Hosting_Model_Api extends Mage_Api_Model_Resource_Abstract
 {
 
     public function cacheClean( $mode, $tags=array() ) {
-Mage::log($mode);
-Mage::log($tags);
+        Mage::log( sprintf('Cache Clean Received via API:  mode:%s  tags:%s',$mode,implode(',',$tags)) );
         $result = false;
         Mage::register('JeroenVermeulen_cacheClean_via_Api',true);
         try {
