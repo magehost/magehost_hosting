@@ -23,67 +23,41 @@ class JeroenVermeulen_Hosting_Model_Observer
      * @param Varien_Event_Observer $observer
      */
     public function jvCleanBackendCache( $observer ) {
-        if ( Mage::getStoreConfigFlag(self::CONFIG_SECTION.'/cluster/enable_pass_cache_clean')
-             && ! Mage::registry('JeroenVermeulen_cacheClean_via_Api') ) {
+        if ( Mage::getStoreConfigFlag(self::CONFIG_SECTION.'/cluster/enable_pass_cache_clean') &&
+             ! Mage::registry('JeroenVermeulen_cacheClean_via_Api') ) {
+            $localHostname = Mage::helper('jeroenvermeulen_hosting')->getLocalHostname();
             $transport = $observer->getTransport();
             Mage::log( sprintf('Cache Clean Event:  mode:%s  tags:%s',$transport->getMode(),implode(',',$transport->getTags())) );
             $nodes = Mage::getStoreConfig(self::CONFIG_SECTION.'/cluster/http_nodes');
             $url = Mage::getUrl('api/v2_soap');
+            $url = str_replace('n98-magerun.phar/', '', $url); // Fix wrong URL generated via n98
             $urlData = parse_url($url);
             $nodeList = explode("\n",$nodes);
+            $localIPs = Mage::helper('jeroenvermeulen_hosting')->getLocalIPs();
             foreach ( $nodeList as $node ) {
+                $nodeIP =  gethostbyname( $node );
+                if ( $node == $localHostname || in_array($nodeIP,$localIPs) ) {
+                    continue;
+                }
                 $node = trim($node);
                 $nodeSplit = explode(':',$node);
                 $scheme = $urlData['scheme'];
                 if ( !empty($nodeSplit[1]) ) {
                     if ( 443 == $nodeSplit[1] ) {
                         $scheme = 'https';
+                        $node = $nodeSplit[0];
                     }
                     elseif ( 80 == $nodeSplit[1] ) {
                         $scheme = 'http';
+                        $node = $nodeSplit[0];
                     }
                 }
-                $nodeLocation = 'http://'.$node.'/api/v2_soap/';
+                $nodeLocation = $scheme.'://'.$node.$urlData['path'];
                 $nodeWsdl     = $nodeLocation.'?wsdl=1';
                 Mage::log( sprintf("%s::%s: Passing flush to %s", __CLASS__, __FUNCTION__, $nodeLocation) );
                 try {
-                    /*
-                    $soapParam['trace'] = true;
-                    $soapParam['encoding'] = 'UTF-8';
-                    $soapParam['cache_wsdl'] = WSDL_CACHE_NONE;
-                    //$soapParam['uri'] = $nodeLocation;
-                    $soapParam['location'] = $nodeLocation;
-                    $headers = array();
-                    $headers[] = 'Host: staging.maxitoys.be';
-                    $headers[] = 'X-Forwarded-Proto: https';
-                    $headers[] = 'Ssl-Offloaded: 1';
-                    $soapParam['stream_context'] = stream_context_create( array(
-                            'ssl' => array( 'verify_peer' => false,
-                                            'allow_self_signed' => true ),
-                            'http' => array( 'header' => implode("\n",$headers),
-                                             'follow_location' => 0,
-                                             'curl_verify_ssl_host' => false,
-                                             'curl_verify_ssl_peer' => false )
-                        )
-                    );
-
-                    $client = new SoapClient($nodeWsdl, $soapParam);
-                    if ( empty($client) ) {
-                        throw new Exception( sprintf("Error creating SOAP object from URI '%s'.", $nodeLocation) );
-                    }
-
-                    $apiUser = 'soapuser';
-                    $apiKey  = 'soappass';
-                    $sessionId =  $client->login( $apiUser, $apiKey );
-                    if ( !preg_match('|^\w+$|',$sessionId) ) {
-                        throw new Exception( sprintf("Error logging in as '%s'.", $apiUser) );
-                    }
-                    $client->jvHostingCacheClean( $sessionId, $transport->getMode(), $transport->getTags() );
-                    */
-
                     $client = new Zend_Soap_Client($nodeWsdl);
                     $client->setLocation($nodeLocation);
-//                    $client->setWsdlCache(WSDL_CACHE_NONE);
                     $headers = array();
                     $headers[] = 'Host: staging.maxitoys.be';
                     if ( $scheme != $urlData['scheme'] ) {
@@ -99,7 +73,8 @@ class JeroenVermeulen_Hosting_Model_Observer
                                              'follow_location'      => 0 )
                     ) ) );
                     $sessionId =  $client->login( 'soapuser', 'soappass' ); // TODO
-                    $client->jvHostingCacheClean( $sessionId, $transport->getMode(), $transport->getTags() );
+                    $client->jvHostingCacheClean( $sessionId, $transport->getMode(),
+                                                  $transport->getTags(), $localHostname );
                 } catch ( Exception $e ) {
                     Mage::log( sprintf("%s::%s: ERROR %s", __CLASS__, __FUNCTION__, $e->getMessage()) );
                 }
