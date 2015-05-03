@@ -44,16 +44,20 @@ class JeroenVermeulen_Hosting_Model_Observer
                     }
                 }
                 $locationUrl = $scheme."://".$node.$urlData['path']; // .'?'.$urlData['query'];
-                $client = new Zend_Soap_Client($url);
-                $client->setLocation($locationUrl);
-                $client->setStreamContext(
-                    stream_context_create( array( 'ssl' => array( 'verify_peer' => false,
-                                                                  'allow_self_signed' => true )
-                                                )
-                                         )
-                );
-                $sessionId =  $client->login( 'soapuser', 'soappass' ); // TODO
-                $client->jvHostingCacheClean( $sessionId, $transport->getMode(), $transport->getTags() );
+                try {
+                    $client = new Zend_Soap_Client($url);
+                    $client->setLocation($locationUrl);
+                    $client->setStreamContext(
+                        stream_context_create( array( 'ssl' => array( 'verify_peer' => false,
+                                                                      'allow_self_signed' => true )
+                            )
+                        )
+                    );
+                    $sessionId =  $client->login( 'soapuser', 'soappass' ); // TODO
+                    $client->jvHostingCacheClean( $sessionId, $transport->getMode(), $transport->getTags() );
+                } catch ( Exception $e ) {
+                    Mage::log( sprintf("%s::%s: ERROR %s", __CLASS__, __FUNCTION__, $e->getMessage()) );
+                }
             }
         }
     }
