@@ -68,8 +68,8 @@ class JeroenVermeulen_Hosting_Model_Observer
                                              'follow_location'      => 0 )
                     ) ) );
                     $apiUser = Mage::getStoreConfig(self::CONFIG_SECTION.'/cluster/api_user');
-                    $apiWord = Mage::getStoreConfig(self::CONFIG_SECTION.'/cluster/api_word');
-                    $sessionId =  $client->login( $apiUser, $apiWord );
+                    $apiKey  = Mage::getStoreConfig(self::CONFIG_SECTION.'/cluster/api_key');
+                    $sessionId =  $client->login( $apiUser, $apiKey );
                     $client->call( $sessionId, 'jvhosting.cacheClean',
                                    array( $transport->getMode(), $transport->getTags(), $localHostname) );
                 } catch ( Exception $e ) {

@@ -48,7 +48,7 @@
                         </http_nodes>
                         <api_user translate="label comment">
                             <label>API User</label>
-                            <comment>Must have rights to "JeroenVermeulen Hosting => Clean Cache".</comment>
+                            <comment>Must have rights to SOAP Resource "JeroenVermeulen Hosting => Clean Cache".</comment>
                             <frontend_type>text</frontend_type>
                             <sort_order>30</sort_order>
                             <show_in_default>1</show_in_default>
@@ -56,15 +56,15 @@
                                 <enable_pass_cache_clean>1</enable_pass_cache_clean>
                             </depends>
                         </api_user>
-                        <api_word translate="label comment">
-                            <label>API Password</label>
+                        <api_key translate="label comment">
+                            <label>API Key</label>
                             <frontend_type>obscure</frontend_type>
                             <sort_order>40</sort_order>
                             <show_in_default>1</show_in_default>
                             <depends>
                                 <enable_pass_cache_clean>1</enable_pass_cache_clean>
                             </depends>
-                        </api_word>
+                        </api_key>
                     </fields>
                 </cluster>
             </groups>
