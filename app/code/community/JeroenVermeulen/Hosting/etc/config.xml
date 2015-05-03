@@ -1,4 +1,17 @@
-<?xml version="1.0"?>
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  JeroenVermeulen_Hosting
+
+  DISCLAIMER
+
+  Do not edit or add to this file if you wish to upgrade this Module to
+  newer versions in the future.
+
+  @category     JeroenVermeulen
+  @package      JeroenVermeulen_Hosting
+  @copyright    Copyright (c) 2015 Jeroen Vermeulen (http://www.jeroenvermeulen.eu)
+-->
+<!--suppress XmlUnboundNsPrefix -->
 <config>
     <modules>
         <JeroenVermeulen_Hosting>
@@ -6,6 +19,11 @@
         </JeroenVermeulen_Hosting>
     </modules>
     <global>
+        <blocks>
+            <jeroenvermeulen_hosting>
+                <class>JeroenVermeulen_Hosting_Block</class>
+            </jeroenvermeulen_hosting>
+        </blocks>
         <models>
             <jeroenvermeulen_hosting>
                 <class>JeroenVermeulen_Hosting_Model</class>
@@ -22,12 +40,29 @@
             <clean_media_cache_after>
                 <observers>
                     <jeroenvermeulen_hosting>
-                        <class>JeroenVermeulen_Hosting_Model_Observer</class>
+                        <class>jeroenvermeulen_hosting/observer</class>
                         <method>cleanMediaCacheAfter</method>
                         <type>singleton</type>
                     </jeroenvermeulen_hosting>
                 </observers>
             </clean_media_cache_after>
+            <jv_clean_backend_cache>
+                <observers>
+                    <jeroenvermeulen_hosting>
+                        <class>jeroenvermeulen_hosting/observer</class>
+                        <method>jvCleanBackendCache</method>
+                        <type>singleton</type>
+                    </jeroenvermeulen_hosting>
+                </observers>
+            </jv_clean_backend_cache>
         </events>
     </adminhtml>
+    <default>
+        <jeroenvermeulen_hosting>
+            <cluster>
+                <enable_pass_cache_clean>0</enable_pass_cache_clean>
+                <http_nodes>127.0.0.1:443</http_nodes>
+            </cluster>
+        </jeroenvermeulen_hosting>
+    </default>
 </config>

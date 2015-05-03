@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  JeroenVermeulen_Hosting
+
+  DISCLAIMER
+
+  Do not edit or add to this file if you wish to upgrade this Module to
+  newer versions in the future.
+
+  @category     JeroenVermeulen
+  @package      JeroenVermeulen_Hosting
+  @copyright    Copyright (c) 2015 Jeroen Vermeulen (http://www.jeroenvermeulen.eu)
+-->
+<!--suppress XmlUnboundNsPrefix -->
+<config>
+    <api>
+        <resources>
+            <jvhosting translate="title" module="jeroenvermeulen_hosting">
+                <model>jeroenvermeulen_hosting/api</model>
+                <title>JeroenVermeulen Hosting</title>
+                <acl>jvhosting</acl>
+                <methods>
+                    <cacheClean translate="title" module="jeroenvermeulen_hosting">
+                        <title>Clean Cache</title>
+                        <acl>jvhosting/cacheClean</acl>
+                    </cacheClean>
+                </methods>
+                <faults module="jeroenvermeulen_hosting">
+                    <command_failed>
+                        <code>100</code >
+                        <message>Executing command failed. Details in error message.</message>
+                    </command_failed>
+                </faults>
+            </jvhosting>
+        </resources>
+        <v2>
+            <resources_function_prefix>
+                <jvhosting>jvHosting</jvhosting>
+            </resources_function_prefix>
+        </v2>
+        <acl>
+            <resources>
+                <jvhosting translate="title" module="jeroenvermeulen_hosting">
+                    <title>JeroenVermeulen Hosting</title>
+                    <cacheClean translate="title" module="jeroenvermeulen_hosting">
+                        <title>Clean Cache</title>
+                    </cacheClean>
+                </jvhosting>
+            </resources>
+        </acl>
+    </api>
+</config>

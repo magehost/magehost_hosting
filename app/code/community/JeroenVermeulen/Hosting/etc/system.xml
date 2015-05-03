@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  JeroenVermeulen_Hosting
+
+  DISCLAIMER
+
+  Do not edit or add to this file if you wish to upgrade this Module to
+  newer versions in the future.
+
+  @category     JeroenVermeulen
+  @package      JeroenVermeulen_Hosting
+  @copyright    Copyright (c) 2015 Jeroen Vermeulen (http://www.jeroenvermeulen.eu)
+-->
+<!--suppress XmlUnboundNsPrefix -->
+<config>
+    <sections>
+        <jeroenvermeulen_hosting translate="label" module="jeroenvermeulen_hosting">
+            <label>JeroenVermeulen Hosting</label>
+            <tab>advanced</tab>
+            <sort_order>10</sort_order>
+            <show_in_default>1</show_in_default>
+            <show_in_website>1</show_in_website>
+            <show_in_store>1</show_in_store>
+            <groups>
+                <cluster translate="label comment" module="jeroenvermeulen_hosting">
+                    <label>Cluster Hosting</label>
+                    <sort_order>100</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <frontend_type>text</frontend_type>
+                    <frontend_model>jeroenvermeulen_hosting/adminhtml_system_config_form_fieldset_first</frontend_model>
+                    <fields>
+                        <enable_pass_cache_clean translate="label comment">
+                            <label>Enable Passing of Cache Clean commands</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>10</sort_order>
+                            <show_in_default>1</show_in_default>
+                        </enable_pass_cache_clean>
+                        <http_nodes translate="label comment">
+                            <label>List of Web Nodes</label>
+                            <comment>Enter one [Host]:[Port] per line.</comment>
+                            <frontend_type>textarea</frontend_type>
+                            <sort_order>20</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <depends>
+                                <enable_pass_cache_clean>1</enable_pass_cache_clean>
+                            </depends>
+                        </http_nodes>
+                    </fields>
+                </cluster>
+            </groups>
+        </jeroenvermeulen_hosting>
+    </sections>
+</config>
