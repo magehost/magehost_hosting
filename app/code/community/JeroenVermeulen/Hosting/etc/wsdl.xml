@@ -14,6 +14,7 @@
     </message>
     <message name="jvHostingCacheCleanResponse">
         <part name="info" type="xsd:boolean" />
+        <part name="message" type="xsd:string" />
     </message>
     <portType name="{{var wsdl.handler}}PortType">
         <operation name="jvHostingCacheClean">
