@@ -44,7 +44,7 @@ class JeroenVermeulen_Hosting_Model_Observer
                     }
                 }
                 $nodeWdsl = $scheme."://".$node.$urlData['path'].'?'.$urlData['query'];
-                $nodeLocation = $scheme."://".$node.$urlData['path'].'?'.$urlData['query'];
+                $nodeLocation = $scheme."://".$node.$urlData['path'];
                 try {
                     $client = new Zend_Soap_Client();
                     $client->setUri($nodeWdsl);
