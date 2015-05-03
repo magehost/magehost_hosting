@@ -47,6 +47,7 @@ class JeroenVermeulen_Hosting_Model_Observer
                 $nodeLocation = $scheme."://".$node.$urlData['path'];
                 Mage::log( sprintf("%s::%s: Passing flush to %s", __CLASS__, __FUNCTION__, $nodeLocation) );
                 try {
+                    // TODO: This only works with 'Auto-redirect to Base URL' disabled.
                     $client = new Zend_Soap_Client();
                     $client->setUri($nodeWsdl);
                     $client->setLocation($nodeLocation);
