@@ -47,6 +47,26 @@ class JeroenVermeulen_Hosting_Model_Observer
                 $nodeLocation = $scheme."://".$node.$urlData['path'];
                 Mage::log( sprintf("%s::%s: Passing flush to %s", __CLASS__, __FUNCTION__, $nodeLocation) );
                 try {
+                    $soapParam['trace'] = true;
+                    $soapParam['encoding'] = 'UTF-8';
+                    $soapParam['cache_wsdl'] = WSDL_CACHE_NONE;
+                    $soapParam['uri'] = $nodeLocation;
+                    $soapParam['location'] = $nodeLocation;
+
+                    $client = new SoapClient(null, $soapParam);
+                    if ( empty($client) ) {
+                        throw new Exception( sprintf("Error creating SOAP object from URI '%s'.", $nodeLocation) );
+                    }
+
+                    $apiUser = 'soapuser';
+                    $apiKey  = 'soappass';
+                    $sessionId =  $client->login( $apiUser, $apiKey );
+                    if ( !preg_match('|^\w+$|',$sessionId) ) {
+                        throw new Exception( sprintf("Error logging in as '%s'.", $apiUser) );
+                    }
+                    $client->jvHostingCacheClean( $sessionId, $transport->getMode(), $transport->getTags() );
+
+                    /*
                     // TODO: Sometimes this does not work and a 302 is returned
                     $client = new Zend_Soap_Client();
                     //$client->setWsdl($nodeWsdl);
@@ -74,6 +94,7 @@ class JeroenVermeulen_Hosting_Model_Observer
                     $sessionId =  $client->login( 'soapuser', 'soappass' ); // TODO
                     $client->jvHostingCacheClean( $sessionId, $transport->getMode(), $transport->getTags() );
                     unset($client);
+                    */
                 } catch ( Exception $e ) {
                     Mage::log( sprintf("%s::%s: ERROR %s", __CLASS__, __FUNCTION__, $e->getMessage()) );
                 }
