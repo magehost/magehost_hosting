@@ -27,7 +27,8 @@ class JeroenVermeulen_Hosting_Model_Observer
              ! Mage::registry('JeroenVermeulen_cacheClean_via_Api') ) {
             $localHostname = Mage::helper('jeroenvermeulen_hosting')->getLocalHostname();
             $transport = $observer->getTransport();
-            Mage::log( sprintf('Cache Clean Event:  mode:%s  tags:%s',$transport->getMode(),implode(',',$transport->getTags())) );
+            Mage::log( sprintf( "Cache Clean Event. Mode '%s', tags '%s'.",
+                                $transport->getMode(), implode(',',$transport->getTags()) ) );
             $nodes = Mage::getStoreConfig(self::CONFIG_SECTION.'/cluster/http_nodes');
             $url = Mage::getUrl('api');
             $url = str_replace('n98-magerun.phar/', '', $url); // Fix wrong URL generated via n98
