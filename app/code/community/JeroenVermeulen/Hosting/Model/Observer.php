@@ -43,13 +43,15 @@ class JeroenVermeulen_Hosting_Model_Observer
                         $scheme = 'http';
                     }
                 }
-                $locationUrl = $scheme."://".$node.$urlData['path']; // .'?'.$urlData['query'];
+                $nodeUri = $scheme."://".$node.$urlData['path']; // .'?'.$urlData['query'];
                 try {
-                    $client = new Zend_Soap_Client($url);
-                    $client->setLocation($locationUrl);
+                    $client = new Zend_Soap_Client();
+                    $client->setUri($nodeUri);
                     $client->setStreamContext(
-                        stream_context_create( array( 'ssl' => array( 'verify_peer' => false,
-                                                                      'allow_self_signed' => true )
+                        stream_context_create( array(
+                                'ssl' => array( 'verify_peer' => false,
+                                                'allow_self_signed' => true ),
+                                'http' => array( 'header' => 'Host: '.$urlData['host'] )
                             )
                         )
                     );
