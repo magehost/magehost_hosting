@@ -24,7 +24,7 @@ class JeroenVermeulen_Hosting_Model_Observer
      */
     public function jvCleanBackendCache( $observer ) {
         $transport = $observer->getTransport();
-        Mage::log( sprintf('Cache Clean:  mode:%s  tags:%s',$transport->getMode(),implode(',',$transport->getTags)) );
+        Mage::log( sprintf('Cache Clean:  mode:%s  tags:%s',$transport->getMode(),implode(',',$transport->getTags())) );
         if ( Mage::getStoreConfigFlag(self::CONFIG_SECTION.'/cluster/enable_pass_cache_clean')
              && ! Mage::registry('JeroenVermeulen_cacheClean_via_Api') ) {
             $transport = $observer->getTransport();
@@ -46,7 +46,12 @@ class JeroenVermeulen_Hosting_Model_Observer
                 $locationUrl = $scheme."://".$node.$urlData['path']; // .'?'.$urlData['query'];
                 $client = new Zend_Soap_Client($url);
                 $client->setLocation($locationUrl);
-                //$client->setSoapVersion(SOAP_1_2);
+                $client->setStreamContext(
+                    stream_context_create( array( 'ssl' => array( 'verify_peer' => false,
+                                                                  'allow_self_signed' => true )
+                                                )
+                                         )
+                );
                 $sessionId =  $client->login( 'soapuser', 'soappass' ); // TODO
                 $client->jvHostingCacheClean( $sessionId, $transport->getMode(), $transport->getTags() );
             }

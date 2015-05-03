@@ -9,7 +9,7 @@
     </types>
     <message name="jvHostingCacheCleanRequest">
         <part name="sessionId" type="xsd:string" />
-        <part name="mode" type="xsd:int" />
+        <part name="mode" type="xsd:string" />
         <part name="tags" type="typens:ArrayOfString" />
     </message>
     <message name="jvHostingCacheCleanResponse">
