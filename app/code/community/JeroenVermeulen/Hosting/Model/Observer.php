@@ -56,12 +56,13 @@ class JeroenVermeulen_Hosting_Model_Observer
                     $headers[] = 'Ssl-Offloaded: 1';
                 }
                 $nodeLocation = $nodeScheme.'://'.$node.$urlData['path'];
-                $nodeWsdl     = $nodeLocation.'?wsdl=1';
+                //$nodeWsdl     = $nodeLocation.'?wsdl=1';
                 Mage::log( sprintf("%s::%s: Passing flush to %s", __CLASS__, __FUNCTION__, $nodeLocation) );
                 try {
-                    $client = new Zend_Soap_Client($nodeWsdl);
-                    $client->setWsdlCache(WSDL_CACHE_MEMORY);
+                    $client = new Zend_Soap_Client(null);
+                    //$client->setWsdlCache(WSDL_CACHE_MEMORY);
                     $client->setLocation($nodeLocation);
+                    $client->setUri($nodeLocation);
                     $client->setStreamContext( stream_context_create( array(
                             'ssl'  => array( 'verify_peer'          => false,
                                              'allow_self_signed'    => true ),
