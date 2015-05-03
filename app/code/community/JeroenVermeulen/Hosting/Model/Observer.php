@@ -52,7 +52,7 @@ class JeroenVermeulen_Hosting_Model_Observer
                     //$client->setWsdl($nodeWsdl);
                     $client->setUri($nodeWsdl);
                     $client->setLocation($nodeLocation);
-                    $client->setWsdlCache(WSDL_CACHE_NONE);
+//                    $client->setWsdlCache(WSDL_CACHE_NONE);
                     $headers = array('Host: '.$urlData['host']);
                     if ( $scheme != $urlData['scheme'] ) {
                         $headers[] = 'X-Forwarded-Proto: '.$urlData['scheme'];
