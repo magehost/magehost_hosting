@@ -4,10 +4,12 @@ class JeroenVermeulen_Hosting_Model_Api extends Mage_Api_Model_Resource_Abstract
 {
 
     public function cacheClean( $mode, $tags=array(), $fromHostname ) {
+        $result = null;
         $localHostname = Mage::helper('jeroenvermeulen_hosting')->getLocalHostname();
         Mage::log( sprintf( "Cache Clean Received from '%s' via API. Mode '%s', tags '%s'",
                             $fromHostname, $mode, implode(',',$tags) ) );
         if ( $fromHostname == $localHostname ) {
+            $result = true;
             $message = sprintf("Ignoring cache clean because I am '%s'.",$localHostname);
             Mage::log( $message );
         } else {
@@ -25,7 +27,7 @@ class JeroenVermeulen_Hosting_Model_Api extends Mage_Api_Model_Resource_Abstract
                 $this->_fault('command_failed', $message);
             }
         }
-        return $message;
+        return $result;
     }
 
 }
