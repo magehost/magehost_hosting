@@ -29,7 +29,7 @@ class JeroenVermeulen_Hosting_Model_Observer
             $transport = $observer->getTransport();
             Mage::log( sprintf('Cache Clean Event:  mode:%s  tags:%s',$transport->getMode(),implode(',',$transport->getTags())) );
             $nodes = Mage::getStoreConfig(self::CONFIG_SECTION.'/cluster/http_nodes');
-            $url = Mage::getUrl('api/v2_soap');
+            $url = Mage::getUrl('api');
             $url = str_replace('n98-magerun.phar/', '', $url); // Fix wrong URL generated via n98
             $urlData = parse_url($url);
             $nodeList = explode("\n",$nodes);
@@ -69,8 +69,8 @@ class JeroenVermeulen_Hosting_Model_Observer
                                              'follow_location'      => 0 )
                     ) ) );
                     $sessionId =  $client->login( 'soapuser', 'soappass' ); // TODO
-                    $client->jvHostingCacheClean( $sessionId, $transport->getMode(),
-                                                  $transport->getTags(), $localHostname );
+                    $client->call( $sessionId, 'jvhosting.cacheClean',
+                                   array( $transport->getMode(), $transport->getTags(), $localHostname) );
                 } catch ( Exception $e ) {
                     Mage::log( sprintf("%s::%s: ERROR %s", __CLASS__, __FUNCTION__, $e->getMessage()) );
                 }

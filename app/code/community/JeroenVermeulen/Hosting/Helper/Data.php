@@ -20,7 +20,7 @@ class JeroenVermeulen_Hosting_Helper_Data extends Mage_Core_Helper_Abstract {
 
     protected function readIPs( $cmd ) {
         $result = array();
-        $lines = explode( "\n", trim(shell_exec($cmd)) );
+        $lines = explode( "\n", trim(shell_exec($cmd.' 2>/dev/null')) );
         foreach( $lines as $line ) {
             $matches = array();
             if ( preg_match('|inet6?\s+(?:addr\:\s*)?([\:\.\w]+)|',$line,$matches) ) {
