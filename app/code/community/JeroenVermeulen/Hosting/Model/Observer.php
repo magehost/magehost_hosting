@@ -43,8 +43,9 @@ class JeroenVermeulen_Hosting_Model_Observer
                         $scheme = 'http';
                     }
                 }
-                $nodeWsdl     = $scheme."://".$node.$urlData['path'].'?wsdl=1';
-                $nodeLocation = $scheme."://".$node.$urlData['path'];
+//                $nodeWsdl     = $scheme."://".$node.$urlData['path'].'?wsdl=1';
+//                $nodeLocation = $scheme."://".$node.$urlData['path'];
+                $nodeLocation = 'http://'.$node.'/api/v2_soap/';
                 Mage::log( sprintf("%s::%s: Passing flush to %s", __CLASS__, __FUNCTION__, $nodeLocation) );
                 try {
                     $soapParam['trace'] = true;
