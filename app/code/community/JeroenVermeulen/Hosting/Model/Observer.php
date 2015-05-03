@@ -28,7 +28,7 @@ class JeroenVermeulen_Hosting_Model_Observer
             $transport = $observer->getTransport();
             Mage::log( sprintf('Cache Clean Event:  mode:%s  tags:%s',$transport->getMode(),implode(',',$transport->getTags())) );
             $nodes = Mage::getStoreConfig(self::CONFIG_SECTION.'/cluster/http_nodes');
-            $url = Mage::getUrl('api/v2_soap',array('_query'=>'wsdl'));
+            $url = Mage::getUrl('api/v2_soap');
             $urlData = parse_url($url);
             $nodeList = explode("\n",$nodes);
             foreach ( $nodeList as $node ) {
@@ -43,11 +43,11 @@ class JeroenVermeulen_Hosting_Model_Observer
                         $scheme = 'http';
                     }
                 }
-                $nodeWsdl     = $scheme."://".$node.$urlData['path'].'?'.$urlData['query'];
+                $nodeWsdl     = $scheme."://".$node.$urlData['path'].'?wsdl=1';
                 $nodeLocation = $scheme."://".$node.$urlData['path'];
                 Mage::log( sprintf("%s::%s: Passing flush to %s", __CLASS__, __FUNCTION__, $nodeLocation) );
                 try {
-                    // TODO: This only works with 'Auto-redirect to Base URL' disabled.
+                    // TODO: Sometimes this does not work and a 302 is returned
                     $client = new Zend_Soap_Client();
                     $client->setUri($nodeWsdl);
                     $client->setLocation($nodeLocation);
