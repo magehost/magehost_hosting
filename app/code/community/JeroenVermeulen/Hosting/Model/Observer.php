@@ -56,11 +56,9 @@ class JeroenVermeulen_Hosting_Model_Observer
                     $headers[] = 'Ssl-Offloaded: 1';
                 }
                 $nodeLocation = $nodeScheme.'://'.$node.$urlData['path'];
-                //$nodeWsdl     = $nodeLocation.'?wsdl=1';
                 Mage::log( sprintf("%s::%s: Passing flush to %s", __CLASS__, __FUNCTION__, $nodeLocation) );
                 try {
                     $client = new Zend_Soap_Client(null);
-                    //$client->setWsdlCache(WSDL_CACHE_MEMORY);
                     $client->setLocation($nodeLocation);
                     $client->setUri($nodeLocation);
                     $client->setStreamContext( stream_context_create( array(
@@ -69,7 +67,9 @@ class JeroenVermeulen_Hosting_Model_Observer
                             'http' => array( 'header'               => implode("\n",$headers),
                                              'follow_location'      => 0 )
                     ) ) );
-                    $sessionId =  $client->login( 'soapuser', 'soappass' ); // TODO
+                    $apiUser = Mage::getStoreConfig(self::CONFIG_SECTION.'/cluster/api_user');
+                    $apiWord = Mage::getStoreConfig(self::CONFIG_SECTION.'/cluster/api_word');
+                    $sessionId =  $client->login( $apiUser, $apiWord );
                     $client->call( $sessionId, 'jvhosting.cacheClean',
                                    array( $transport->getMode(), $transport->getTags(), $localHostname) );
                 } catch ( Exception $e ) {
