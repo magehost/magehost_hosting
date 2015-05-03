@@ -54,6 +54,9 @@ class JeroenVermeulen_Hosting_Model_Observer
                     $headers = array('Host: '.$urlData['host']);
                     if ( $scheme != $urlData['scheme'] ) {
                         $headers[] = 'X-Forwarded-Proto: '.$urlData['scheme'];
+                        if ( 'https' == $urlData['scheme'] ) {
+                            $headers[] = 'Ssl-Offloaded: 1';
+                        }
                     }
                     $client->setStreamContext(
                         stream_context_create( array(
