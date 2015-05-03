@@ -34,8 +34,10 @@ class JeroenVermeulen_Hosting_Model_Observer
             $urlData = parse_url($url);
             $nodeList = explode("\n",$nodes);
             $localIPs = Mage::helper('jeroenvermeulen_hosting')->getLocalIPs();
+    var_dump($localIPs);
             foreach ( $nodeList as $node ) {
                 $nodeIP =  gethostbyname( $node );
+    var_dump($nodeIP);
                 if ( $node == $localHostname || in_array($nodeIP,$localIPs) ) {
                     continue;
                 }
