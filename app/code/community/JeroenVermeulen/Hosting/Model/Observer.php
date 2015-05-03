@@ -46,15 +46,29 @@ class JeroenVermeulen_Hosting_Model_Observer
 //                $nodeWsdl     = $scheme."://".$node.$urlData['path'].'?wsdl=1';
 //                $nodeLocation = $scheme."://".$node.$urlData['path'];
                 $nodeLocation = 'http://'.$node.'/api/v2_soap/';
+                $nodeWsdl     = $nodeLocation.'?wsdl=1';
                 Mage::log( sprintf("%s::%s: Passing flush to %s", __CLASS__, __FUNCTION__, $nodeLocation) );
                 try {
                     $soapParam['trace'] = true;
                     $soapParam['encoding'] = 'UTF-8';
                     $soapParam['cache_wsdl'] = WSDL_CACHE_NONE;
-                    $soapParam['uri'] = $nodeLocation;
+                    //$soapParam['uri'] = $nodeLocation;
                     $soapParam['location'] = $nodeLocation;
+                    $headers = array();
+                    $headers[] = 'Host: staging.maxitoys.be';
+                    $headers[] = 'X-Forwarded-Proto: https';
+                    $headers[] = 'Ssl-Offloaded: 1';
+                    $soapParam['stream_context'] = stream_context_create( array(
+                            'ssl' => array( 'verify_peer' => false,
+                                            'allow_self_signed' => true ),
+                            'http' => array( 'header' => implode("\n",$headers),
+                                             'follow_location' => 0,
+                                             'curl_verify_ssl_host' => false,
+                                             'curl_verify_ssl_peer' => false )
+                        )
+                    );
 
-                    $client = new SoapClient(null, $soapParam);
+                    $client = new SoapClient($nodeWsdl, $soapParam);
                     if ( empty($client) ) {
                         throw new Exception( sprintf("Error creating SOAP object from URI '%s'.", $nodeLocation) );
                     }
@@ -109,17 +123,18 @@ class JeroenVermeulen_Hosting_Model_Observer
      * @return bool
      * @throws Exception
      */
-    protected function clean_dir_content( $dir ) {
-        if ( !is_dir($dir) ) {
+    protected function clean_dir_content( $dir )
+    {
+        if (!is_dir( $dir )) {
             return false;
         }
         $result = true;
-        foreach (scandir($dir) as $file) {
+        foreach (scandir( $dir ) as $file) {
             if ($file == '.' || $file == '..') {
                 continue;
             }
             $path = $dir . DIRECTORY_SEPARATOR . $file;
-            if ( is_dir($path) ) {
+            if (is_dir( $path )) {
                 $this->clean_dir_content( $path );
                 $result = $result && rmdir( $path );
             } else {
