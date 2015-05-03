@@ -43,7 +43,7 @@ class JeroenVermeulen_Hosting_Model_Observer
                         $scheme = 'http';
                     }
                 }
-                $nodeWsdl = $scheme."://".$node.$urlData['path'].'?'.$urlData['query'];
+                $nodeWsdl     = $scheme."://".$node.$urlData['path'].'?'.$urlData['query'];
                 $nodeLocation = $scheme."://".$node.$urlData['path'];
                 Mage::log( sprintf("%s::%s: Passing flush to %s", __CLASS__, __FUNCTION__, $nodeLocation) );
                 try {
@@ -51,11 +51,15 @@ class JeroenVermeulen_Hosting_Model_Observer
                     $client->setUri($nodeWsdl);
                     $client->setLocation($nodeLocation);
                     $client->setWsdlCache(WSDL_CACHE_NONE);
+                    $headers = array('Host: '.$urlData['host']);
+                    if ( $scheme != $urlData['scheme'] ) {
+                        $headers[] = 'X-Forwarded-Proto: '.$urlData['scheme'];
+                    }
                     $client->setStreamContext(
                         stream_context_create( array(
                                 'ssl' => array( 'verify_peer' => false,
                                                 'allow_self_signed' => true ),
-                                'http' => array( 'header' => array('Host: '.$urlData['host']) )
+                                'http' => array( 'header' => $headers )
                             )
                         )
                     );
