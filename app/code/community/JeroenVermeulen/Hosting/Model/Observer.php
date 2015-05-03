@@ -49,8 +49,8 @@ class JeroenVermeulen_Hosting_Model_Observer
                 try {
                     // TODO: Sometimes this does not work and a 302 is returned
                     $client = new Zend_Soap_Client();
-                    $client->setWsdl($nodeWsdl);
-                    $client->setUri($nodeLocation);
+                    //$client->setWsdl($nodeWsdl);
+                    $client->setUri($nodeWsdl);
                     $client->setLocation($nodeLocation);
                     $client->setWsdlCache(WSDL_CACHE_NONE);
                     $headers = array('Host: '.$urlData['host']);
