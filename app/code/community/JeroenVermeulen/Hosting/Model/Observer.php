@@ -23,6 +23,8 @@ class JeroenVermeulen_Hosting_Model_Observer
      * @param Varien_Event_Observer $observer
      */
     public function jvCleanBackendCache( $observer ) {
+        $transport = $observer->getTransport();
+        Mage::log( sprintf('Cache Clean:  mode:%s  tags:%s',$transport->getMode(),implode(',',$transport->getTags)) );
         if ( Mage::getStoreConfigFlag(self::CONFIG_SECTION.'/cluster/enable_pass_cache_clean')
              && ! Mage::registry('JeroenVermeulen_cacheClean_via_Api') ) {
             $transport = $observer->getTransport();
