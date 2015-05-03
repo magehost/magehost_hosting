@@ -27,8 +27,6 @@ class JeroenVermeulen_Hosting_Helper_Data extends Mage_Core_Helper_Abstract {
                 $result[] = $matches[1];
             }
         }
-        var_dump($cmd);
-        var_dump($result);
         return $result;
     }
 }
