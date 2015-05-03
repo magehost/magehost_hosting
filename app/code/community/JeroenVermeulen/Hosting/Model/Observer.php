@@ -45,6 +45,7 @@ class JeroenVermeulen_Hosting_Model_Observer
                 }
                 $nodeWdsl = $scheme."://".$node.$urlData['path'].'?'.$urlData['query'];
                 $nodeLocation = $scheme."://".$node.$urlData['path'];
+                Mage::log( sprintf("%s::%s: Passing flush to %s", __CLASS__, __FUNCTION__, $nodeLocation) );
                 try {
                     $client = new Zend_Soap_Client();
                     $client->setUri($nodeWdsl);
