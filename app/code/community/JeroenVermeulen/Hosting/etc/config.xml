@@ -15,7 +15,7 @@
 <config>
     <modules>
         <JeroenVermeulen_Hosting>
-            <version>0.1.0</version>
+            <version>0.2.0</version>
         </JeroenVermeulen_Hosting>
     </modules>
     <global>

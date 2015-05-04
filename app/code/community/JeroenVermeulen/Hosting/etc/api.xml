@@ -22,7 +22,7 @@
                 <methods>
                     <cacheClean translate="title" module="jeroenvermeulen_hosting">
                         <title>Clean Cache</title>
-                        <acl>jvhosting/cacheClean</acl>
+                        <acl>jvhosting/cache_clean</acl>
                     </cacheClean>
                 </methods>
                 <faults module="jeroenvermeulen_hosting">
@@ -42,9 +42,9 @@
             <resources>
                 <jvhosting translate="title" module="jeroenvermeulen_hosting">
                     <title>JeroenVermeulen Hosting</title>
-                    <cacheClean translate="title" module="jeroenvermeulen_hosting">
+                    <cache_clean translate="title" module="jeroenvermeulen_hosting">
                         <title>Clean Cache</title>
-                    </cacheClean>
+                    </cache_clean>
                 </jvhosting>
             </resources>
         </acl>
