@@ -20,7 +20,14 @@ class JeroenVermeulen_Hosting_Helper_Data extends Mage_Core_Helper_Abstract {
      * @return string - Local hostname
      */
     public function getLocalHostname() {
-        return trim(shell_exec('hostname -f'));
+        $hostname = shell_exec('hostname -f 2>/dev/null');
+        if ( empty($hostname) ) {
+            $hostname = shell_exec('hostname -s 2>/dev/null');
+        }
+        if ( empty($hostname) ) {
+            $hostname = reset( $this->getLocalIPs() );
+        }
+        return trim($hostname);
     }
 
     /**
@@ -48,10 +55,11 @@ class JeroenVermeulen_Hosting_Helper_Data extends Mage_Core_Helper_Abstract {
         foreach( $lines as $line ) {
             $matches = array();
             if ( preg_match('|inet6?\s+(?:addr\:\s*)?([\:\.\w]+)|',$line,$matches) ) {
-                $result[] = $matches[1];
+                $result[$matches[1]] = 1;
             }
         }
-        $result = array_unique( $result );
-        return $result;
+        unset( $result['127.0.0.1'] );
+        unset( $result['::1'] );
+        return array_keys($result);
     }
 }
