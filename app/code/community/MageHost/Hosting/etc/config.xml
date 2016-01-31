@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  MageHost_Hosting
+
+  DISCLAIMER
+
+  Do not edit or add to this file if you wish to upgrade this Module to
+  newer versions in the future.
+
+  @category     MageHost
+  @package      MageHost_Hosting
+  @copyright    Copyright (c) 2015 MageHost BVBA (http://www.magentohosting.pro)
+-->
+<!--suppress XmlUnboundNsPrefix -->
+<config>
+    <modules>
+        <MageHost_Hosting>
+            <version>0.4.0</version>
+        </MageHost_Hosting>
+    </modules>
+    <global>
+        <blocks>
+            <magehost_hosting>
+                <class>MageHost_Hosting_Block</class>
+            </magehost_hosting>
+        </blocks>
+        <models>
+            <magehost_hosting>
+                <class>>MageHost_Hosting_Model</class>
+            </magehost_hosting>
+        </models>
+        <helpers>
+            <magehost_hosting>
+                <class>MageHost_Hosting_Helper</class>
+            </magehost_hosting>
+        </helpers>
+    </global>
+    <adminhtml>
+        <events>
+            <clean_media_cache_after>
+                <observers>
+                    <magehost_hosting>
+                        <class>magehost_hosting/observer</class>
+                        <method>cleanMediaCacheAfter</method>
+                        <type>singleton</type>
+                    </magehost_hosting>
+                </observers>
+            </clean_media_cache_after>
+            <mh_clean_backend_cache>
+                <observers>
+                    <magehost_hosting>
+                        <class>magehost_hosting/observer</class>
+                        <method>mhCleanBackendCache</method>
+                        <type>singleton</type>
+                    </magehost_hosting>
+                </observers>
+            </mh_clean_backend_cache>
+        </events>
+    </adminhtml>
+    <default>
+        <magehost_hosting>
+            <cluster>
+                <enable_pass_cache_clean>0</enable_pass_cache_clean>
+                <http_nodes>node.domain.tld:443</http_nodes>
+                <api_user>cluster</api_user>
+                <api_key>change_me</api_key>
+            </cluster>
+        </magehost_hosting>
+    </default>
+</config>

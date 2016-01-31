@@ -1,31 +1,31 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-  JeroenVermeulen_Hosting
+  MageHost_Hosting
 
   DISCLAIMER
 
   Do not edit or add to this file if you wish to upgrade this Module to
   newer versions in the future.
 
-  @category     JeroenVermeulen
-  @package      JeroenVermeulen_Hosting
-  @copyright    Copyright (c) 2015 Jeroen Vermeulen (http://www.jeroenvermeulen.eu)
+  @category     MageHost
+  @package      MageHost_Hosting
+  @copyright    Copyright (c) 2015 MageHost BVBA (http://www.magentohosting.pro)
 -->
 <!--suppress XmlUnboundNsPrefix -->
 <config>
     <api>
         <resources>
-            <jvhosting translate="title" module="jeroenvermeulen_hosting">
-                <model>jeroenvermeulen_hosting/api</model>
-                <title>JeroenVermeulen Hosting</title>
+            <jvhosting translate="title" module="magehost_hosting">
+                <model>magehost_hosting/api</model>
+                <title>MageHost Hosting</title>
                 <acl>jvhosting</acl>
                 <methods>
-                    <cacheClean translate="title" module="jeroenvermeulen_hosting">
+                    <cacheClean translate="title" module="magehost_hosting">
                         <title>Clean Cache</title>
-                        <acl>jvhosting/cache_clean</acl>
+                        <acl>mhhosting/cache_clean</acl>
                     </cacheClean>
                 </methods>
-                <faults module="jeroenvermeulen_hosting">
+                <faults module="magehost_hosting">
                     <command_failed>
                         <code>100</code >
                         <message>Executing command failed. Details in error message.</message>
@@ -40,12 +40,12 @@
         </v2>
         <acl>
             <resources>
-                <jvhosting translate="title" module="jeroenvermeulen_hosting">
-                    <title>JeroenVermeulen Hosting</title>
-                    <cache_clean translate="title" module="jeroenvermeulen_hosting">
+                <mhhosting translate="title" module="magehost_hosting">
+                    <title>MageHost Hosting</title>
+                    <cache_clean translate="title" module="magehost_hosting">
                         <title>Clean Cache</title>
                     </cache_clean>
-                </jvhosting>
+                </mhhosting>
             </resources>
         </acl>
     </api>

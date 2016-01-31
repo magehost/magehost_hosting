@@ -1,19 +1,19 @@
 <?php
 /**
- * JeroenVermeulen_Hosting
+ * MageHost_Hosting
  *
  * DISCLAIMER
  *
  * Do not edit or add to this file if you wish to upgrade this Module to
  * newer versions in the future.
  *
- * @category    JeroenVermeulen
- * @package     JeroenVermeulen_Hosting
- * @copyright   Copyright (c) 2015 Jeroen Vermeulen (http://www.jeroenvermeulen.eu)
+ * @category     MageHost
+ * @package      MageHost_Hosting
+ * @copyright    Copyright (c) 2015 MageHost BVBA (http://www.magentohosting.pro)
  */
 /** @noinspection PhpUndefinedClassInspection */
 
-class JeroenVermeulen_Hosting_Block_Adminhtml_System_Config_Form_Fieldset_First
+class MageHost_Hosting_Block_Adminhtml_System_Config_Form_Fieldset_First
     extends Mage_Adminhtml_Block_System_Config_Form_Fieldset
 {
     const CONFIG_SECTION  = 'jeroenvermeulen_hosting';

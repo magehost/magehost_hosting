@@ -2,9 +2,9 @@
 <!--suppress XmlUnboundNsPrefix -->
 <config>
     <modules>
-        <JeroenVermeulen_Hosting>
+        <MageHost_Hosting>
             <active>true</active>
             <codePool>community</codePool>
-        </JeroenVermeulen_Hosting>
+        </MageHost_Hosting>
     </modules>
 </config>

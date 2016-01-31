@@ -1,20 +1,20 @@
 <?php
 /**
- * JeroenVermeulen_Hosting
+ * MageHost_Hosting
  *
  * DISCLAIMER
  *
  * Do not edit or add to this file if you wish to upgrade this Module to
  * newer versions in the future.
  *
- * @category     JeroenVermeulen
- * @package      JeroenVermeulen_Hosting
- * @copyright    Copyright (c) 2015 Jeroen Vermeulen (http://www.jeroenvermeulen.eu)
+ * @category     MageHost
+ * @package      MageHost_Hosting
+ * @copyright    Copyright (c) 2015 MageHost BVBA (http://www.magentohosting.pro)
  */
 
-class JeroenVermeulen_Hosting_Model_Observer
+class MageHost_Hosting_Model_Observer
 {
-    const CONFIG_SECTION  = 'jeroenvermeulen_hosting';
+    const CONFIG_SECTION  = 'magehost_hosting';
 
     /**
      * Event listener to clean minified JS and CSS files in 'mini' directory.
@@ -39,12 +39,12 @@ class JeroenVermeulen_Hosting_Model_Observer
     /**
      * Event listener for cache backend cleans.
      * The event 'jv_clean_backend_cache' can only be triggered if cache backend used in local.xml:
-     *    'JeroenVermeulen_Cm_Cache_Backend_File'
-     * or 'JeroenVermeulen_Cm_Cache_Backend_Redis'
+     *    'MageHost_Cm_Cache_Backend_File'
+     * or 'MageHost_Cm_Cache_Backend_Redis'
      *
      * @param Varien_Event_Observer $observer
      */
-    public function jvCleanBackendCache( $observer ) {
+    public function mhCleanBackendCache( $observer ) {
         if ( Mage::getStoreConfigFlag(self::CONFIG_SECTION.'/cluster/enable_pass_cache_clean') &&
              ! Mage::registry('JeroenVermeulen_cacheClean_via_Api') ) {
             $localHostname = Mage::helper('jeroenvermeulen_hosting')->getLocalHostname();

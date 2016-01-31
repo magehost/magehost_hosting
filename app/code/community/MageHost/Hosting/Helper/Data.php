@@ -1,18 +1,17 @@
 <?php
 /**
- * JeroenVermeulen_Hosting
+ * MageHost_Hosting
  *
  * DISCLAIMER
  *
  * Do not edit or add to this file if you wish to upgrade this Module to
  * newer versions in the future.
  *
- * @category     JeroenVermeulen
- * @package      JeroenVermeulen_Hosting
- * @copyright    Copyright (c) 2015 Jeroen Vermeulen (http://www.jeroenvermeulen.eu)
+ * @category     MageHost
+ * @package      MageHost_Hosting
+ * @copyright    Copyright (c) 2015 MageHost BVBA (http://www.magentohosting.pro)
  */
-
-class JeroenVermeulen_Hosting_Helper_Data extends Mage_Core_Helper_Abstract {
+class MageHost_Hosting_Helper_Data extends Mage_Core_Helper_Abstract {
 
     /**
      * Get local hostname of this server

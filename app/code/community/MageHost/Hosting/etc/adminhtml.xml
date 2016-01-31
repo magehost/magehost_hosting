@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-  JeroenVermeulen_Hosting
+  MageHost_Hosting
 
   DISCLAIMER
 
   Do not edit or add to this file if you wish to upgrade this Module to
   newer versions in the future.
 
-  @category     JeroenVermeulen
-  @package      JeroenVermeulen_Hosting
-  @copyright    Copyright (c) 2015 Jeroen Vermeulen (http://www.jeroenvermeulen.eu)
+  @category     MageHost
+  @package      MageHost_Hosting
+  @copyright    Copyright (c) 2015 MageHost BVBA (http://www.magentohosting.pro)
 -->
 <!--suppress XmlUnboundNsPrefix -->
 <config>
@@ -21,9 +21,9 @@
                         <children>
                             <config>
                                 <children>
-                                    <jeroenvermeulen_hosting translate="title" module="jeroenvermeulen_hosting">
-                                        <title>JeroenVermeulen Hosting Section</title>
-                                    </jeroenvermeulen_hosting>
+                                    <magehost_hosting translate="title" module="jeroenvermeulen_hosting">
+                                        <title>MageHost Hosting Section</title>
+                                    </magehost_hosting>
                                 </children>
                             </config>
                         </children>
