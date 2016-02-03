@@ -9,7 +9,7 @@
  *
  * @category     MageHost
  * @package      MageHost_Hosting
- * @copyright    Copyright (c) 2015 MageHost BVBA (http://www.magentohosting.pro)
+ * @copyright    Copyright (c) 2016 MageHost BVBA (http://www.magentohosting.pro)
  */
 
 class MageHost_Hosting_Model_Api extends Mage_Api_Model_Resource_Abstract

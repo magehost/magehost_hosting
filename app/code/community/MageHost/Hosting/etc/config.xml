@@ -9,13 +9,13 @@
 
   @category     MageHost
   @package      MageHost_Hosting
-  @copyright    Copyright (c) 2015 MageHost BVBA (http://www.magentohosting.pro)
+  @copyright    Copyright (c) 2016 MageHost BVBA (http://www.magentohosting.pro)
 -->
 <!--suppress XmlUnboundNsPrefix -->
 <config>
     <modules>
         <MageHost_Hosting>
-            <version>0.4.0</version>
+            <version>0.4.1</version>
         </MageHost_Hosting>
     </modules>
     <global>
@@ -26,7 +26,7 @@
         </blocks>
         <models>
             <magehost_hosting>
-                <class>>MageHost_Hosting_Model</class>
+                <class>MageHost_Hosting_Model</class>
             </magehost_hosting>
         </models>
         <helpers>
@@ -46,15 +46,24 @@
                     </magehost_hosting>
                 </observers>
             </clean_media_cache_after>
-            <magehost_clean_backend_cache>
+            <magehost_clean_backend_cache_before>
                 <observers>
                     <magehost_hosting>
                         <class>magehost_hosting/observer</class>
-                        <method>magehostCleanBackendCache</method>
+                        <method>magehostCleanBackendCacheBefore</method>
                         <type>singleton</type>
                     </magehost_hosting>
                 </observers>
-            </magehost_clean_backend_cache>
+            </magehost_clean_backend_cache_before>
+            <magehost_clean_backend_cache_after>
+                <observers>
+                    <magehost_hosting>
+                        <class>magehost_hosting/observer</class>
+                        <method>magehostCleanBackendCacheAfter</method>
+                        <type>singleton</type>
+                    </magehost_hosting>
+                </observers>
+            </magehost_clean_backend_cache_after>
         </events>
     </adminhtml>
     <default>

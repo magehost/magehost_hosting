@@ -9,7 +9,7 @@
  *
  * @category     MageHost
  * @package      MageHost_Hosting
- * @copyright    Copyright (c) 2015 MageHost BVBA (http://www.magentohosting.pro)
+ * @copyright    Copyright (c) 2016 MageHost BVBA (http://www.magentohosting.pro)
  */
 class MageHost_Hosting_Helper_Data extends Mage_Core_Helper_Abstract {
 
@@ -60,5 +60,29 @@ class MageHost_Hosting_Helper_Data extends Mage_Core_Helper_Abstract {
         unset( $result['127.0.0.1'] );
         unset( $result['::1'] );
         return array_keys($result);
+    }
+
+    /**
+     * @param string $message
+     */
+    public function successMessage( $message ) {
+        if ( null === Mage::app()->getRequest()->getControllerName() ) {
+            // Shell script
+            echo $message . "\n";
+        } else {
+            Mage::getSingleton( 'adminhtml/session' )->addSuccess( $message );
+        }
+    }
+
+    /**
+     * @param string $message
+     */
+    public function errorMessage( $message ) {
+        if ( null === Mage::app()->getRequest()->getControllerName() ) {
+            // Shell script
+            printf( "ERROR: %s\n", $message );
+        } else {
+            Mage::getSingleton( 'adminhtml/session' )->addError( $message );
+        }
     }
 }

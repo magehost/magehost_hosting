@@ -9,12 +9,21 @@
  *
  * @category     MageHost
  * @package      MageHost_Hosting
- * @copyright    Copyright (c) 2015 MageHost BVBA (http://www.magentohosting.pro)
+ * @copyright    Copyright (c) 2016 MageHost BVBA (http://www.magentohosting.pro)
  */
 
 class MageHost_Hosting_Model_Observer
 {
     const CONFIG_SECTION  = 'magehost_hosting';
+    /** @var bool|string */
+    protected $miniDir = false;
+
+    public function __construct() {
+        $this->miniDir = Mage::getBaseDir('base') . DIRECTORY_SEPARATOR . 'mini';
+        if ( !is_dir($this->miniDir) ) {
+            $this->miniDir = false;
+        }
+    }
 
     /**
      * Event listener to clean minified JS and CSS files in 'mini' directory.
@@ -23,39 +32,50 @@ class MageHost_Hosting_Model_Observer
      * @param Varien_Event_Observer $observer
      */
     public function cleanMediaCacheAfter( /** @noinspection PhpUnusedParameterInspection */ $observer ) {
-        $miniDir = Mage::getBaseDir('base') . DIRECTORY_SEPARATOR . 'mini';
-        if ( is_dir($miniDir) ) {
-            $success = $this->clean_dir_content( $miniDir );
-            /** @var Mage_Adminhtml_Model_Session $adminSession */
-            $adminSession = Mage::getSingleton('adminhtml/session');
-            if ( $success ) {
-                $adminSession->addSuccess( sprintf("Directory '%s' has been cleaned.",$miniDir) );
-            } else {
-                $adminSession->addError( sprintf("Error cleaning directory '%s'.",$miniDir) );
-            }
-        }
+        $this->cleanMiniDir();
     }
 
     /**
      * Event listener for cache backend cleans.
-     * The event 'magehost_clean_backend_cache' is only triggered if cache backend used in local.xml:
+     * The event 'magehost_clean_backend_cache_after' is only triggered if cache backend used in local.xml:
      *    'MageHost_Cm_Cache_Backend_File'
      * or 'MageHost_Cm_Cache_Backend_Redis'
      *
      * @param Varien_Event_Observer $observer
      */
-    public function magehostCleanBackendCache( $observer ) {
+    public function magehostCleanBackendCacheAfter( $observer ) {
+        if ($this->miniDir) {
+            $prefix = Mage::app()->getCacheInstance()->getFrontend()->getOption('cache_id_prefix');
+            if ( empty($observer->getTransport()->getTags()) ) {
+                // no tags = clear everything
+                $this->cleanMiniDir();
+            } else {
+                foreach ($observer->getTransport()->getTags() as $tag) {
+                    if (0 === stripos($tag, $prefix . Mage_Core_Block_Abstract::CACHE_GROUP)) {
+                        $this->cleanMiniDir();
+                        break;
+                    }
+                }
+            }
+        }
         if ( Mage::getStoreConfigFlag(self::CONFIG_SECTION.'/cluster/enable_pass_cache_clean') &&
-             ! Mage::registry('MageHost_cacheClean_via_Api') ) {
+            ! Mage::registry('MageHost_cacheClean_via_Api') ) {
             $localHostname = Mage::helper('magehost_hosting')->getLocalHostname();
             /** @noinspection PhpUndefinedMethodInspection */
             $transport = $observer->getTransport();
             /** @noinspection PhpUndefinedMethodInspection */
             Mage::log( sprintf( "Cache Clean Event. Mode '%s', tags '%s'.",
-                                $transport->getMode(), implode(',',$transport->getTags()) ) );
+                $transport->getMode(), implode(',',$transport->getTags()) ) );
             $nodes = Mage::getStoreConfig(self::CONFIG_SECTION.'/cluster/http_nodes');
-            $url = Mage::getUrl('api');
+            $url = '';
+            // Protection against occasional crash while trying to get API url during n98-magerun usage
+            if (  Mage::app()->getFrontController()->getRouter('admin') ) {
+                $url = Mage::getUrl('api');
+            }
             $url = str_replace('n98-magerun.phar/', '', $url); // Fix wrong URL generated via n98
+            if ( empty($url) ) {
+                $url = '/api/';
+            }
             $urlData = parse_url($url);
             $nodeList = explode("\n",$nodes);
             $localIPs = Mage::helper('magehost_hosting')->getLocalIPs();
@@ -87,10 +107,10 @@ class MageHost_Hosting_Model_Observer
                     $client->setLocation($nodeLocation);
                     $client->setUri($nodeLocation);
                     $client->setStreamContext( stream_context_create( array(
-                            'ssl'  => array( 'verify_peer'          => false,
-                                             'allow_self_signed'    => true ),
-                            'http' => array( 'header'               => implode("\n",$headers),
-                                             'follow_location'      => 0 )
+                        'ssl'  => array( 'verify_peer'          => false,
+                            'allow_self_signed'    => true ),
+                        'http' => array( 'header'               => implode("\n",$headers),
+                            'follow_location'      => 0 )
                     ) ) );
                     $apiUser = Mage::getStoreConfig(self::CONFIG_SECTION.'/cluster/api_user');
                     $apiKey  = Mage::getStoreConfig(self::CONFIG_SECTION.'/cluster/api_key');
@@ -98,10 +118,22 @@ class MageHost_Hosting_Model_Observer
                     $sessionId =  $client->login( $apiUser, $apiKey );
                     /** @noinspection PhpUndefinedMethodInspection */
                     $client->call( $sessionId, 'magehost_hosting.cacheClean',
-                                   array( $transport->getMode(), $transport->getTags(), $localHostname) );
+                        array( $transport->getMode(), $transport->getTags(), $localHostname) );
                 } catch ( Exception $e ) {
                     Mage::log( sprintf("%s::%s: ERROR %s", __CLASS__, __FUNCTION__, $e->getMessage()) );
                 }
+            }
+        }
+    }
+
+    protected function cleanMiniDir() {
+        if ( $this->miniDir ) {
+            $success = $this->clean_dir_content( $this->miniDir );
+            /** @var Mage_Adminhtml_Model_Session $adminSession */
+            if ( $success ) {
+                Mage::helper('magehost_hosting')->successMessage( sprintf("Directory '%s' has been cleaned.",$this->miniDir) );
+            } else {
+                Mage::helper('magehost_hosting')->errorMessage( sprintf("Error cleaning directory '%s'.",$this->miniDir) );
             }
         }
     }

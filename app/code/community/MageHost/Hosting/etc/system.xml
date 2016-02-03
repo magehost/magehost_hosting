@@ -9,13 +9,13 @@
 
   @category     MageHost
   @package      MageHost_Hosting
-  @copyright    Copyright (c) 2015 MageHost BVBA (http://www.magentohosting.pro)
+  @copyright    Copyright (c) 2016 MageHost BVBA (http://www.magentohosting.pro)
 -->
 <!--suppress XmlUnboundNsPrefix -->
 <config>
     <sections>
         <magehost_hosting translate="label" module="magehost_hosting">
-            <label>MageHost Hosting</label>
+            <label>MagentoHosting.pro</label>
             <tab>advanced</tab>
             <sort_order>10</sort_order>
             <show_in_default>1</show_in_default>
