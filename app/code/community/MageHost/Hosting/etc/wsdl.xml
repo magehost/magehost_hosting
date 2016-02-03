@@ -8,25 +8,25 @@
             <import namespace="http://schemas.xmlsoap.org/soap/encoding/" schemaLocation="http://schemas.xmlsoap.org/soap/encoding/" />
         </schema>
     </types>
-    <message name="jvHostingCacheCleanRequest">
+    <message name="magehostHostingCacheCleanRequest">
         <part name="sessionId" type="xsd:string" />
         <part name="mode" type="xsd:string" />
         <part name="tags" type="typens:ArrayOfString" />
         <part name="fromHostname" type="xsd:string" />
     </message>
-    <message name="jvHostingCacheCleanResponse">
+    <message name="magehostHostingCacheCleanResponse">
         <part name="message" type="xsd:string" />
     </message>
     <portType name="{{var wsdl.handler}}PortType">
-        <operation name="jvHostingCacheClean">
+        <operation name="magehostHostingCacheClean">
             <documentation>Clean Cache</documentation>
-            <input message="typens:jvHostingCacheCleanRequest" />
-            <output message="typens:jvHostingCacheCleanResponse" />
+            <input message="typens:magehostHostingCacheCleanRequest" />
+            <output message="typens:magehostHostingCacheCleanResponse" />
         </operation>
     </portType>
     <binding name="{{var wsdl.handler}}Binding" type="typens:{{var wsdl.handler}}PortType">
         <soap:binding style="rpc" transport="http://schemas.xmlsoap.org/soap/http" />
-        <operation name="jvHostingCacheClean">
+        <operation name="magehostHostingCacheClean">
             <soap:operation soapAction="urn:{{var wsdl.handler}}Action" />
             <input>
                 <soap:body namespace="urn:{{var wsdl.name}}" use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />

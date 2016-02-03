@@ -46,15 +46,15 @@
                     </magehost_hosting>
                 </observers>
             </clean_media_cache_after>
-            <mh_clean_backend_cache>
+            <magehost_clean_backend_cache>
                 <observers>
                     <magehost_hosting>
                         <class>magehost_hosting/observer</class>
-                        <method>mhCleanBackendCache</method>
+                        <method>magehostCleanBackendCache</method>
                         <type>singleton</type>
                     </magehost_hosting>
                 </observers>
-            </mh_clean_backend_cache>
+            </magehost_clean_backend_cache>
         </events>
     </adminhtml>
     <default>

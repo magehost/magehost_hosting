@@ -15,14 +15,14 @@
 <config>
     <api>
         <resources>
-            <jvhosting translate="title" module="magehost_hosting">
+            <magehost_hosting translate="title" module="magehost_hosting">
                 <model>magehost_hosting/api</model>
                 <title>MageHost Hosting</title>
-                <acl>jvhosting</acl>
+                <acl>magehost_hosting</acl>
                 <methods>
                     <cacheClean translate="title" module="magehost_hosting">
                         <title>Clean Cache</title>
-                        <acl>mhhosting/cache_clean</acl>
+                        <acl>magehost_hosting/cache_clean</acl>
                     </cacheClean>
                 </methods>
                 <faults module="magehost_hosting">
@@ -31,21 +31,21 @@
                         <message>Executing command failed. Details in error message.</message>
                     </command_failed>
                 </faults>
-            </jvhosting>
+            </magehost_hosting>
         </resources>
         <v2>
             <resources_function_prefix>
-                <jvhosting>jvHosting</jvhosting>
+                <magehost_hosting>magehostHosting</magehost_hosting>
             </resources_function_prefix>
         </v2>
         <acl>
             <resources>
-                <mhhosting translate="title" module="magehost_hosting">
+                <magehost_hosting translate="title" module="magehost_hosting">
                     <title>MageHost Hosting</title>
                     <cache_clean translate="title" module="magehost_hosting">
                         <title>Clean Cache</title>
                     </cache_clean>
-                </mhhosting>
+                </magehost_hosting>
             </resources>
         </acl>
     </api>

@@ -48,7 +48,7 @@
                         </http_nodes>
                         <api_user translate="label comment">
                             <label>API User</label>
-                            <comment>Must have rights to SOAP Resource "JeroenVermeulen Hosting => Clean Cache".</comment>
+                            <comment>Must have rights to SOAP Resource "MageHost Hosting => Clean Cache".</comment>
                             <frontend_type>text</frontend_type>
                             <sort_order>30</sort_order>
                             <show_in_default>1</show_in_default>

@@ -7,4 +7,5 @@ app/etc/modules/MageHost_Hosting.xml                                 app/etc/mod
 # ---- Extension code dir
 # Magento Community Module     - Recursive Dir - MageHost/Hosting
 app/code/community/MageHost/Hosting/                                 app/code/community/MageHost/Hosting/
+app/code/community/MageHost/Cm/                                      app/code/community/MageHost/Cm/
 

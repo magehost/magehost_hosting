@@ -16,7 +16,7 @@
 class MageHost_Hosting_Block_Adminhtml_System_Config_Form_Fieldset_First
     extends Mage_Adminhtml_Block_System_Config_Form_Fieldset
 {
-    const CONFIG_SECTION  = 'jeroenvermeulen_hosting';
+    const CONFIG_SECTION  = 'magehost_hosting';
 
     /**
      * Show explanation about Cache Backend that needs to be used
@@ -30,7 +30,7 @@ class MageHost_Hosting_Block_Adminhtml_System_Config_Form_Fieldset_First
         if ( Mage::getStoreConfigFlag(self::CONFIG_SECTION.'/cluster/enable_pass_cache_clean') ) {
             $currentBackEnd = get_class( Mage::app()->getCacheInstance()->getFrontEnd()->getBackend() );
             $currentBackEnd = preg_replace( '/^Zend_Cache_Backend_/','', $currentBackEnd );
-            $goodBackEnds = array('JeroenVermeulen_Cm_Cache_Backend_File', 'JeroenVermeulen_Cm_Cache_Backend_Redis');
+            $goodBackEnds = array('MageHost_Cm_Cache_Backend_File', 'MageHost_Cm_Cache_Backend_Redis');
             $or = "' " . $this->__('or') . " '";
             if ( ! in_array( $currentBackEnd, $goodBackEnds ) ) {
                 $message .= 'ERROR:';

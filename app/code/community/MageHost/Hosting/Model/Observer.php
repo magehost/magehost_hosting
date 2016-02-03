@@ -38,16 +38,16 @@ class MageHost_Hosting_Model_Observer
 
     /**
      * Event listener for cache backend cleans.
-     * The event 'jv_clean_backend_cache' can only be triggered if cache backend used in local.xml:
+     * The event 'magehost_clean_backend_cache' is only triggered if cache backend used in local.xml:
      *    'MageHost_Cm_Cache_Backend_File'
      * or 'MageHost_Cm_Cache_Backend_Redis'
      *
      * @param Varien_Event_Observer $observer
      */
-    public function mhCleanBackendCache( $observer ) {
+    public function magehostCleanBackendCache( $observer ) {
         if ( Mage::getStoreConfigFlag(self::CONFIG_SECTION.'/cluster/enable_pass_cache_clean') &&
-             ! Mage::registry('JeroenVermeulen_cacheClean_via_Api') ) {
-            $localHostname = Mage::helper('jeroenvermeulen_hosting')->getLocalHostname();
+             ! Mage::registry('MageHost_cacheClean_via_Api') ) {
+            $localHostname = Mage::helper('magehost_hosting')->getLocalHostname();
             /** @noinspection PhpUndefinedMethodInspection */
             $transport = $observer->getTransport();
             /** @noinspection PhpUndefinedMethodInspection */
@@ -58,7 +58,7 @@ class MageHost_Hosting_Model_Observer
             $url = str_replace('n98-magerun.phar/', '', $url); // Fix wrong URL generated via n98
             $urlData = parse_url($url);
             $nodeList = explode("\n",$nodes);
-            $localIPs = Mage::helper('jeroenvermeulen_hosting')->getLocalIPs();
+            $localIPs = Mage::helper('magehost_hosting')->getLocalIPs();
             foreach ( $nodeList as $node ) {
                 $node = trim($node);
                 $nodeSplit = explode(':',$node);
@@ -97,7 +97,7 @@ class MageHost_Hosting_Model_Observer
                     /** @noinspection PhpUndefinedMethodInspection */
                     $sessionId =  $client->login( $apiUser, $apiKey );
                     /** @noinspection PhpUndefinedMethodInspection */
-                    $client->call( $sessionId, 'jvhosting.cacheClean',
+                    $client->call( $sessionId, 'magehost_hosting.cacheClean',
                                    array( $transport->getMode(), $transport->getTags(), $localHostname) );
                 } catch ( Exception $e ) {
                     Mage::log( sprintf("%s::%s: ERROR %s", __CLASS__, __FUNCTION__, $e->getMessage()) );

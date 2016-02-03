@@ -27,7 +27,7 @@ class MageHost_Hosting_Model_Api extends Mage_Api_Model_Resource_Abstract
     public function cacheClean( $mode, $tags=array(), $fromHostname ) {
         $result = false;
         /** @noinspection PhpUndefinedMethodInspection */
-        $localHostname = Mage::helper('jeroenvermeulen_hosting')->getLocalHostname();
+        $localHostname = Mage::helper('magehost_hosting')->getLocalHostname();
         Mage::log( sprintf( "Cache Clean Received from '%s' via API. Mode '%s', tags '%s'",
                             $fromHostname, $mode, implode(',',$tags) ) );
         if ( $fromHostname == $localHostname ) {
@@ -35,7 +35,7 @@ class MageHost_Hosting_Model_Api extends Mage_Api_Model_Resource_Abstract
             $message = sprintf("Ignoring cache clean because I am '%s'.",$localHostname);
             Mage::log( $message );
         } else {
-            Mage::register('JeroenVermeulen_cacheClean_via_Api',true);
+            Mage::register('MageHost_cacheClean_via_Api',true);
             try {
                 /** @noinspection PhpUndefinedMethodInspection */
                 $result = Mage::app()->getCacheInstance()->getFrontEnd()->getBackend()->clean($mode, $tags);

@@ -21,7 +21,7 @@
                         <children>
                             <config>
                                 <children>
-                                    <magehost_hosting translate="title" module="jeroenvermeulen_hosting">
+                                    <magehost_hosting translate="title" module="magehost_hosting">
                                         <title>MageHost Hosting Section</title>
                                     </magehost_hosting>
                                 </children>
