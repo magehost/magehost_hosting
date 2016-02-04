@@ -1,9 +1,6 @@
 [submodule "app/code/community/MageHost/Cm/Cache/Backend"]
 	path = app/code/community/MageHost/Cm/Cache/Backend
 	url = https://github.com/magehost/magehost-cm_cache_backend
-[submodule "vendor/Cm_Cache_Backend_Redis"]
-	path = vendor/Cm_Cache_Backend_Redis
-	url = https://github.com/colinmollenhour/Cm_Cache_Backend_Redis.git
-[submodule "vendor/Cm_Cache_Backend_File"]
-	path = vendor/Cm_Cache_Backend_File
+[submodule "app/code/community/Cm/Cache/Backend"]
+	path = app/code/community/Cm/Cache/Backend
 	url = https://github.com/colinmollenhour/Cm_Cache_Backend_File.git
