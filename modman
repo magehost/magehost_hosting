@@ -3,5 +3,5 @@
 app/etc/modules/MageHost_Hosting.xml                                 app/etc/modules/MageHost_Hosting.xml
 app/code/community/MageHost/Hosting/                                 app/code/community/MageHost/Hosting/
 app/code/community/MageHost/Cm/                                      app/code/community/MageHost/Cm/
-app/code/community/Cm/Cache/Backend/                                 app/code/community/Cm/Cache/Backend/
+app/code/community/Cm/Cache/Backend/File.php                         app/code/community/Cm/Cache/Backend/File.php
 
