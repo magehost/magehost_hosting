@@ -14,6 +14,8 @@
 * This is required in a cluster setup
 * Works via SOAP API
 
-### Flushes minify cache when 'Flush JS/CSS Cache' button is pressed
+### Flushes minify cache
+* Flushes minify cache when 'Flush JS/CSS Cache' button is pressed
+* Flushes minify cache when 'block_html' cache is flushed
 * Empties 'httpdocs/mini' directory if it exists
 * Minify can be used on Nginx hosting accounts from [MagentoHosting.pro](https://magentohosting.pro)
