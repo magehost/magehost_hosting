@@ -1,11 +1,7 @@
 ## MageHost_Hosting Extension - The application side of the high performance Magento Hosting by MagentoHosting.pro
 
-# ---- Module enable XML
-# Magento Global Config        - File          - modules/MageHost_Hosting.xml
 app/etc/modules/MageHost_Hosting.xml                                 app/etc/modules/MageHost_Hosting.xml
-
-# ---- Extension code dir
-# Magento Community Module     - Recursive Dir - MageHost/Hosting
 app/code/community/MageHost/Hosting/                                 app/code/community/MageHost/Hosting/
 app/code/community/MageHost/Cm/                                      app/code/community/MageHost/Cm/
+app/code/community/Cm/Cache/Backend/                                 app/code/community/Cm/Cache/Backend/
 
