@@ -126,6 +126,23 @@ class MageHost_Hosting_Model_Observer
         }
     }
 
+    /**
+     * If you have a big site, Google crawler hits the site a lot of times in a short time period.
+     * This causes lock problems with Cm_RedisSession, because all crawler hits are requesting the same session lock.
+     * Cm_RedisSession provides the define CM_REDISSESSION_LOCKING_ENABLED to overrule if locking should be enabled.
+     *
+     * @param Varien_Event_Observer $observer
+     */
+    function controllerFrontInitBefore( /** @noinspection PhpUnusedParameterInspection */ Varien_Event_Observer $observer ) {
+        if (Mage::helper('core')->isModuleEnabled('Cm_RedisSession')) {
+            $userAgent = empty($_SERVER['HTTP_USER_AGENT']) ? false : $_SERVER['HTTP_USER_AGENT'];
+            $isBot = ( !$userAgent || preg_match(Cm_RedisSession_Model_Session::BOT_REGEX, $userAgent) );
+            if ($isBot) {
+                define('CM_REDISSESSION_LOCKING_ENABLED', false);
+            }
+        }
+    }
+
     protected function cleanMiniDir() {
         if ( $this->miniDir ) {
             $success = $this->clean_dir_content( $this->miniDir );

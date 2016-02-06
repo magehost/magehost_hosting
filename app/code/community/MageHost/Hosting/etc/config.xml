@@ -15,7 +15,7 @@
 <config>
     <modules>
         <MageHost_Hosting>
-            <version>0.4.1</version>
+            <version>0.5.0</version>
         </MageHost_Hosting>
     </modules>
     <global>
@@ -34,6 +34,17 @@
                 <class>MageHost_Hosting_Helper</class>
             </magehost_hosting>
         </helpers>
+        <events>
+            <controller_front_init_before>
+                <observers>
+                    <onderdelen_custom>
+                        <type>singleton</type>
+                        <class>MageHost_Hosting_Model_Observer</class>
+                        <method>controllerFrontInitBefore</method>
+                    </onderdelen_custom>
+                </observers>
+            </controller_front_init_before>
+        </events>
     </global>
     <adminhtml>
         <events>

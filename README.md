@@ -19,3 +19,8 @@
 * Flushes minify cache when 'block_html' cache is flushed
 * Empties 'httpdocs/mini' directory if it exists
 * Minify can be used on Nginx hosting accounts from [MagentoHosting.pro](https://magentohosting.pro)
+
+## Disable locking in Cm_RedisSession for Bots
+* Detects robots using User-Agent header
+* Speeds up page load time for GoogleBot
+* Google will index more pages
