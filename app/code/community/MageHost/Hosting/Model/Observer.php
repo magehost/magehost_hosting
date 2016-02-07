@@ -44,6 +44,7 @@ class MageHost_Hosting_Model_Observer
      * @param Varien_Event_Observer $observer
      */
     public function magehostCleanBackendCacheAfter( $observer ) {
+        // Check if we need to flush the 'mini' dir containing minified JavaScript and CSS
         if ($this->miniDir) {
             $prefix = Mage::app()->getCacheInstance()->getFrontend()->getOption('cache_id_prefix');
             if ( empty($observer->getTransport()->getTags()) ) {
@@ -54,10 +55,14 @@ class MageHost_Hosting_Model_Observer
                     if (0 === stripos($tag, $prefix . Mage_Core_Block_Abstract::CACHE_GROUP)) {
                         $this->cleanMiniDir();
                         break;
+                    } elseif (0 === stripos($tag, $prefix . Mage_Core_Model_Layout_Update::LAYOUT_GENERAL_CACHE_TAG)) {
+                        $this->cleanMiniDir();
+                        break;
                     }
                 }
             }
         }
+        // Pass flush to other nodes in cluster if enabled
         if ( Mage::getStoreConfigFlag(self::CONFIG_SECTION.'/cluster/enable_pass_cache_clean') &&
             ! Mage::registry('MageHost_cacheClean_via_Api') ) {
             $localHostname = Mage::helper('magehost_hosting')->getLocalHostname();

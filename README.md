@@ -17,6 +17,7 @@
 ### Flushes minify cache
 * Flushes minify cache when 'Flush JS/CSS Cache' button is pressed
 * Flushes minify cache when 'block_html' cache is flushed
+* Flushes minify cache when 'layout' cache is flushed
 * Empties 'httpdocs/mini' directory if it exists
 * Minify can be used on Nginx hosting accounts from [MagentoHosting.pro](https://magentohosting.pro)
 
