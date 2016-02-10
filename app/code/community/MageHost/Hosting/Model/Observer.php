@@ -51,11 +51,12 @@ class MageHost_Hosting_Model_Observer
                 // no tags = clear everything
                 $this->cleanMiniDir();
             } else {
+                $cleanOnTags = array( strtoupper(Mage_Core_Block_Abstract::CACHE_GROUP),
+                                      strtoupper(Mage_Core_Model_Layout_Update::LAYOUT_GENERAL_CACHE_TAG) );
+                $prefixMatch = '/^' . preg_quote($prefix,'/') . '/i';
                 foreach ($observer->getTransport()->getTags() as $tag) {
-                    if (0 === stripos($tag, $prefix . Mage_Core_Block_Abstract::CACHE_GROUP)) {
-                        $this->cleanMiniDir();
-                        break;
-                    } elseif (0 === stripos($tag, $prefix . Mage_Core_Model_Layout_Update::LAYOUT_GENERAL_CACHE_TAG)) {
+                    $tag = preg_replace( $prefixMatch, '', $tag );
+                    if ( in_array($tag,$cleanOnTags) ) {
                         $this->cleanMiniDir();
                         break;
                     }
