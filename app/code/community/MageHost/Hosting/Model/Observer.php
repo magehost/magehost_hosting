@@ -77,7 +77,9 @@ class MageHost_Hosting_Model_Observer
             if (  Mage::app()->getFrontController()->getRouter('admin') ) {
                 $url = Mage::getUrl('api');
             }
-            $url = str_replace('n98-magerun.phar/', '', $url); // Fix wrong URL generated via n98
+            // Fix wrong URL generated via n98
+            $url = str_replace('n98-magerun.phar/', '', $url);
+            $url = str_replace('n98-magerun/', '', $url);
             if ( empty($url) ) {
                 $url = '/api/';
             }
