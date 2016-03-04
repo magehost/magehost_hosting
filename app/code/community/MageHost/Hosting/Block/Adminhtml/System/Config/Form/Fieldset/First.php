@@ -26,6 +26,13 @@ class MageHost_Hosting_Block_Adminhtml_System_Config_Form_Fieldset_First
      */
     protected function _getHeaderHtml($element) {
         $result = '';
+        if ( is_dir( Mage::getBaseDir('base') . DIRECTORY_SEPARATOR . 'mini') ) {
+            $note = '';
+            $note .= "On our webservers CSS and JavaScript files can be automatically minified to optimize performance.<br />\n";
+            $note .= "These minified files are cached in the '<code>httpdocs/mini</code>' directory.<br />\n";
+            $note .= "When the Magento cache is cleaned, this extension will cleanup the minify cache.<br />\n";
+            $result.= sprintf( '<ul class="messages"><li class="notice-msg"><ul><li><span>%s</span></li></ul></li></ul>', $note );
+        }
         $goodBackEnds = array();
         $currentBackEnd = get_class( Mage::app()->getCacheInstance()->getFrontEnd()->getBackend() );
         $currentBackEnd = preg_replace( '/^Zend_Cache_Backend_/','', $currentBackEnd );
