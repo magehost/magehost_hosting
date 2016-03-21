@@ -1,7 +1,8 @@
 ## MageHost_Hosting Extension - The application side of the high performance Magento Hosting by MagentoHosting.pro
 
-app/code/community/Cm/Cache/Backend/File.php   app/code/community/Cm/Cache/Backend/File.php
-app/code/community/MageHost/Hosting/           app/code/community/MageHost/Hosting/
-app/code/community/MageHost/Cm/                app/code/community/MageHost/Cm/
-app/etc/modules/MageHost_Hosting.xml           app/etc/modules/MageHost_Hosting.xml
-shell/mh_redis_cache_clean.php                 shell/mh_redis_cache_clean.php
+app/code/community/Cm/Cache/Backend/File.php            app/code/community/Cm/Cache/Backend/File.php
+app/code/community/MageHost/Hosting/                    app/code/community/MageHost/Hosting/
+app/code/community/MageHost/Cm/Cache/Backend/File.php   app/code/community/MageHost/Cm/Cache/Backend/File.php
+app/code/community/MageHost/Cm/Cache/Backend/Redis.php  app/code/community/MageHost/Cm/Cache/Backend/Redis.php
+app/etc/modules/MageHost_Hosting.xml                    app/etc/modules/MageHost_Hosting.xml
+shell/mh_redis_cache_clean.php                          shell/mh_redis_cache_clean.php
