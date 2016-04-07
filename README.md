@@ -1,5 +1,7 @@
 # MagentoHosting.pro Magento Extension
 
+[Jump to Installation](#Installation)
+
 ## Functionality
 
 ### MageHost_Cm_Cache_Backend_Redis
@@ -28,7 +30,7 @@
 * Speeds up page load time for GoogleBot
 * Google will index more pages
 
-## Installation
+## <a name="Installation"/>Installation
 * Install [Modman](https://github.com/colinmollenhour/modman)
 * `cd` to your Magento root dir
 * `test -d .modman || modman init`
