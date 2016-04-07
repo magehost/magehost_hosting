@@ -38,3 +38,8 @@
 * If you keep your Magento code in Git: 
   * `rm -rf lib/Credis/.git`
   * Add `.modman` to your `.gitignore`
+
+## Configuration
+There is only configuration needed for the passing of flushes to other servers. The configuration screen also shows some information about the extension and an error message if something is wrong.
+It can be found in the Admin here:
+`System => Configuration  => ADVANCED => MagentoHosting.pro`
