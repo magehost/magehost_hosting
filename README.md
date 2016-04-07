@@ -1,5 +1,7 @@
 # MagentoHosting.pro Magento Extension
 
+## Functionality
+
 ### MageHost_Cm_Cache_Backend_Redis
 * Extended version of Cm_Cache_Backend_Redis
 * Requires Cm_Cache_Backend_Redis to be installed
@@ -25,3 +27,12 @@
 * Detects robots using User-Agent header
 * Speeds up page load time for GoogleBot
 * Google will index more pages
+
+## Installation
+* Install [Modman](https://github.com/colinmollenhour/modman)
+* `cd` to your Magento root dir
+* `test -d .modman || modman init`
+* `modman clone --copy --force https://github.com/magehost/MageHost-Hosting`
+* If you keep your Magento code in Git: 
+  * `rm -rf lib/Credis/.git`
+  * Add `.modman` to your `.gitignore`
