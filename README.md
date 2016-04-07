@@ -1,6 +1,6 @@
 # MagentoHosting.pro Magento Extension
 
-[Jump to Installation](#Installation)
+[Jump to Installation](#installation)
 
 ## Functionality
 
@@ -30,7 +30,7 @@
 * Speeds up page load time for GoogleBot
 * Google will index more pages
 
-## <a name="Installation"/>Installation
+## Installation
 * Install [Modman](https://github.com/colinmollenhour/modman)
 * `cd` to your Magento root dir
 * `test -d .modman || modman init`
