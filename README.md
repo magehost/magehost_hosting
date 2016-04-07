@@ -1,8 +1,8 @@
 # MagentoHosting.pro Magento Extension
 
-[Functionality](#functionality)
-[Installation](#installation)
-[Configuration](#installation)
+* [Functionality](#functionality)
+* [Installation](#installation)
+* [Configuration](#installation)
 
 ## Functionality
 
