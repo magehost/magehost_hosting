@@ -36,7 +36,7 @@
 * Install [Modman](https://github.com/colinmollenhour/modman)
 * `cd` to your Magento root dir
 * `test -d .modman || modman init`
-* `modman clone --copy --force https://github.com/magehost/MageHost-Hosting`
+* `modman clone --copy --force https://github.com/magehost/MageHost_Hosting`
 * If you keep your Magento code in Git: 
   * `rm -rf lib/Credis/.git`
   * Add `.modman` to your `.gitignore`
