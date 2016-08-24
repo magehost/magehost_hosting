@@ -82,13 +82,16 @@ class MageHost_Hosting_Model_Observer
             $url = str_replace('n98-magerun.phar/', '', $url);
             $url = str_replace('n98-magerun/', '', $url);
             if ( empty($url) ) {
-                $url = '/api/';
+                $url = Mage::getStoreConfig('web/unsecure/base_url') . 'api/';
             }
             $urlData = parse_url($url);
             $nodeList = explode("\n",$nodes);
             $localIPs = Mage::helper('magehost_hosting')->getLocalIPs();
             foreach ( $nodeList as $node ) {
                 $node = trim($node);
+                if ( empty($node) ) {
+                    continue;
+                }
                 $nodeSplit = explode(':',$node);
                 $nodeHost = $nodeSplit[0];
                 $nodePort = (empty($nodeSplit[1])) ? 80 : intval($nodeSplit[1]);
@@ -99,11 +102,11 @@ class MageHost_Hosting_Model_Observer
                 $headers = array();
                 $headers[] = 'Host: '.$urlData['host'];
                 $nodeScheme = $urlData['scheme'];
-                if ( 443 == $nodePort && 'http' == $nodeScheme ) {
+                if ( 443 == $nodePort && 'https' != $nodeScheme ) {
                     $nodeScheme = 'https';
                     $headers[] = 'X-Forwarded-Proto: http';
                 }
-                elseif ( 80 == $nodePort && 'https' == $nodeScheme ) {
+                elseif ( 80 == $nodePort && 'http' != $nodeScheme ) {
                     $nodeScheme = 'http';
                     $headers[] = 'X-Forwarded-Proto: https';
                     $headers[] = 'Ssl-Offloaded: 1';
