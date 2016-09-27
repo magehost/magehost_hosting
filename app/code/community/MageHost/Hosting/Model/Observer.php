@@ -78,8 +78,10 @@ class MageHost_Hosting_Model_Observer
             if (  Mage::app()->getFrontController()->getRouter('admin') ) {
                 $url = Mage::getUrl('api');
             }
-            // Fix wrong URL generated via n98
-            $url = str_replace('n98-magerun.phar/', '', $url);
+            // Fix wrong URL generated via n98 or other CLI tools
+            if ( false === strpos($url,'/index.php/api') ) {
+                $url = preg_replace('#/[\w\-]+\.(php|phar)/api#', '/api', $url);
+            }
             $url = str_replace('n98-magerun/', '', $url);
             if ( empty($url) ) {
                 $url = Mage::getStoreConfig('web/unsecure/base_url') . 'api/';
