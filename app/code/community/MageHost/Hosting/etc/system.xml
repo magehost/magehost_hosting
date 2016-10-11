@@ -46,6 +46,16 @@
                                 <enable_pass_cache_clean>1</enable_pass_cache_clean>
                             </depends>
                         </http_nodes>
+                        <host_header translate="label comment">
+                            <label>HTTP Host Header</label>
+                            <comment>Leave empty for automatic mode.</comment>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>25</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <depends>
+                                <enable_pass_cache_clean>1</enable_pass_cache_clean>
+                            </depends>
+                        </host_header>
                         <api_user translate="label comment">
                             <label>API User</label>
                             <comment>Must have rights to SOAP Resource "MageHost Hosting => Clean Cache".</comment>

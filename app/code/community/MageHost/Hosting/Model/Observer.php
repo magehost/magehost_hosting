@@ -102,7 +102,12 @@ class MageHost_Hosting_Model_Observer
                     continue;
                 }
                 $headers = array();
-                $headers[] = 'Host: '.$urlData['host'];
+                $configHostHeader = Mage::getStoreConfig(self::CONFIG_SECTION.'/cluster/host_header');
+                if ( !empty($configHostHeader) ) {
+                    $headers[] = 'Host: ' . $configHostHeader;
+                } else {
+                    $headers[] = 'Host: ' . $urlData['host'];
+                }
                 $nodeScheme = $urlData['scheme'];
                 if ( 443 == $nodePort && 'https' != $nodeScheme ) {
                     $nodeScheme = 'https';

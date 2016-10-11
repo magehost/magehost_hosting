@@ -15,7 +15,7 @@
 <config>
     <modules>
         <MageHost_Hosting>
-            <version>0.6.1</version>
+            <version>0.6.2</version>
         </MageHost_Hosting>
     </modules>
     <global>
@@ -73,6 +73,7 @@
             <cluster>
                 <enable_pass_cache_clean>0</enable_pass_cache_clean>
                 <http_nodes>node.domain.tld:443</http_nodes>
+                <host_header></host_header>
                 <api_user>cluster</api_user>
                 <api_key>change_me</api_key>
             </cluster>
