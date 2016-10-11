@@ -97,18 +97,21 @@ class MageHost_Hosting_Model_Observer
                 $nodeSplit = explode(':',$node);
                 $nodeHost = $nodeSplit[0];
                 $nodePort = (empty($nodeSplit[1])) ? 80 : intval($nodeSplit[1]);
-                $nodeIP =  gethostbyname( $nodeHost );
+                if ( preg_match('/^\d+\.\d+\.\d+\.\d+$/',$nodeHost) ) {
+                    $nodeIP = $nodeHost;
+                } else {
+                    $nodeIP =  gethostbyname( $nodeHost );
+                }
                 if ( $nodeHost == $localHostname || in_array($nodeIP,$localIPs) ) {
                     continue;
                 }
                 $headers = array();
-                $configHostHeader = Mage::getStoreConfig(self::CONFIG_SECTION.'/cluster/host_header');
-                if ( !empty($configHostHeader) ) {
-                    $headers[] = 'Host: ' . $configHostHeader;
-                } else {
-                    $headers[] = 'Host: ' . $urlData['host'];
+                $hostHeader = Mage::getStoreConfig(self::CONFIG_SECTION.'/cluster/host_header');
+                if ( empty($hostHeader) ) {
+                    $hostHeader = $urlData['host'];
                 }
                 $nodeScheme = $urlData['scheme'];
+                $headers[] = 'Host: ' . $hostHeader;
                 if ( 443 == $nodePort && 'https' != $nodeScheme ) {
                     $nodeScheme = 'https';
                     $headers[] = 'X-Forwarded-Proto: http';
@@ -119,26 +122,22 @@ class MageHost_Hosting_Model_Observer
                     $headers[] = 'Ssl-Offloaded: 1';
                 }
                 $nodeLocation = $nodeScheme.'://'.$node.$urlData['path'];
-                Mage::log( sprintf("%s::%s: Passing flush to %s", __CLASS__, __FUNCTION__, $nodeLocation) );
+                $apiUser = Mage::getStoreConfig(self::CONFIG_SECTION.'/cluster/api_user');
+                $apiKey  = Mage::getStoreConfig(self::CONFIG_SECTION.'/cluster/api_key');
+                $options = array('uri' => 'urn:Magento',
+                                 'location' => $nodeLocation,
+                                 'curl_headers' => $headers );
+                Mage::log( sprintf("%s::%s: Passing flush to '%s' with Host header '%s'",
+                                   __CLASS__, __FUNCTION__, $nodeLocation, $hostHeader) );
                 try {
-                    $client = new Zend_Soap_Client(null);
-                    $client->setLocation($nodeLocation);
-                    $client->setUri($nodeLocation);
-                    $client->setStreamContext( stream_context_create( array(
-                        'ssl'  => array( 'verify_peer'          => false,
-                            'allow_self_signed'    => true ),
-                        'http' => array( 'header'               => implode("\n",$headers),
-                            'follow_location'      => 0 )
-                    ) ) );
-                    $apiUser = Mage::getStoreConfig(self::CONFIG_SECTION.'/cluster/api_user');
-                    $apiKey  = Mage::getStoreConfig(self::CONFIG_SECTION.'/cluster/api_key');
+                    $client = new MageHost_Hosting_Model_SoapClientCurl(null,$options);
                     /** @noinspection PhpUndefinedMethodInspection */
                     $sessionId =  $client->login( $apiUser, $apiKey );
                     /** @noinspection PhpUndefinedMethodInspection */
                     $client->call( $sessionId, 'magehost_hosting.cacheClean',
-                        array( $transport->getMode(), $transport->getTags(), $localHostname) );
+                                   array( $transport->getMode(), $transport->getTags(), $localHostname) );
                 } catch ( Exception $e ) {
-                    Mage::log( sprintf("%s::%s: ERROR %s", __CLASS__, __FUNCTION__, $e->getMessage()) );
+                    Mage::log( sprintf("%s::%s: ERROR during SOAP request: %s", __CLASS__, __FUNCTION__, $e->getMessage()) );
                 }
             }
         }

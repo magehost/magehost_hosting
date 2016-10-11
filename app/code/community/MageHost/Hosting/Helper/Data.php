@@ -19,9 +19,13 @@ class MageHost_Hosting_Helper_Data extends Mage_Core_Helper_Abstract {
      * @return string - Local hostname
      */
     public function getLocalHostname() {
-        $hostname = shell_exec('hostname -f 2>/dev/null');
-        if ( empty($hostname) ) {
-            $hostname = shell_exec('hostname -s 2>/dev/null');
+        if ( function_exists('shell_exec') ) {
+            $hostname = shell_exec('hostname -f 2>/dev/null');
+            if (empty($hostname)) {
+                $hostname = shell_exec('hostname -s 2>/dev/null');
+            }
+        } else {
+            $hostname = gethostname();
         }
         if ( empty($hostname) ) {
             $hostname = reset( $this->getLocalIPs() );
@@ -35,9 +39,15 @@ class MageHost_Hosting_Helper_Data extends Mage_Core_Helper_Abstract {
      * @return array - Local IPs
      */
     public function getLocalIPs() {
-        $result = $this->readIPs('ip addr');
-        if ( empty($result) ) {
-            $result = $this->readIPs('ifconfig -a');
+        $result = array();
+        if ( function_exists('shell_exec') ) {
+            $result = $this->readIPs('ip addr');
+            if (empty($result)) {
+                $result = $this->readIPs('ifconfig -a');
+            }
+        }
+        if (!empty($_SERVER['SERVER_ADDR']) && !in_array($_SERVER['SERVER_ADDR'],$result)) {
+            $result[] = $_SERVER['SERVER_ADDR'];
         }
         return $result;
     }
