@@ -110,25 +110,36 @@ class MageHost_Hosting_Model_Observer
                 if ( empty($hostHeader) ) {
                     $hostHeader = $urlData['host'];
                 }
-                $nodeScheme = $urlData['scheme'];
+                $nodeSchemeConfig = Mage::getStoreConfig(self::CONFIG_SECTION.'/cluster/http_protocol');
                 $headers[] = 'Host: ' . $hostHeader;
-                if ( 443 == $nodePort && 'https' != $nodeScheme ) {
-                    $nodeScheme = 'https';
-                    $headers[] = 'X-Forwarded-Proto: http';
-                }
-                elseif ( 80 == $nodePort && 'http' != $nodeScheme ) {
-                    $nodeScheme = 'http';
-                    $headers[] = 'X-Forwarded-Proto: https';
-                    $headers[] = 'Ssl-Offloaded: 1';
+                if ( 'auto' == $nodeSchemeConfig ) {
+                    $nodeScheme = $urlData['scheme'];
+                    if ( 443 == $nodePort && 'https' != $nodeScheme ) {
+                        // strange situation
+                        $nodeScheme = 'https';
+                        $headers[] = 'X-Forwarded-Proto: http';
+                    }
+                    elseif ( 80 == $nodePort && 'http' != $nodeScheme ) {
+                        $nodeScheme = 'http';
+                        $headers[] = 'X-Forwarded-Proto: https';
+                        $headers[] = 'Ssl-Offloaded: 1';
+                    }
+                } else {
+                    $nodeScheme = $nodeSchemeConfig;
+                    if ( 'http_ssloffloaded' == $nodeScheme ) {
+                        $nodeScheme = 'http';
+                        $headers[] = 'X-Forwarded-Proto: https';
+                        $headers[] = 'Ssl-Offloaded: 1';
+                    }
                 }
                 $nodeLocation = $nodeScheme.'://'.$node.$urlData['path'];
                 $apiUser = Mage::getStoreConfig(self::CONFIG_SECTION.'/cluster/api_user');
                 $apiKey  = Mage::getStoreConfig(self::CONFIG_SECTION.'/cluster/api_key');
-                $options = array('uri' => 'urn:Magento',
-                                 'location' => $nodeLocation,
-                                 'curl_headers' => $headers );
-                Mage::log( sprintf("%s::%s: Passing flush to '%s' with Host header '%s'",
-                                   __CLASS__, __FUNCTION__, $nodeLocation, $hostHeader) );
+                $options = array( 'uri' => 'urn:Magento',
+                                  'location' => $nodeLocation,
+                                  'curl_headers' => $headers );
+                Mage::log( sprintf("%s::%s: Passing flush to '%s' with headers '%s'",
+                                   __CLASS__, __FUNCTION__, $nodeLocation, implode(' + ',$headers)), Zend_Log::INFO );
                 try {
                     $client = new MageHost_Hosting_Model_SoapClientCurl(null,$options);
                     /** @noinspection PhpUndefinedMethodInspection */
@@ -154,7 +165,7 @@ class MageHost_Hosting_Model_Observer
         if (Mage::helper('core')->isModuleEnabled('Cm_RedisSession')) {
             $userAgent = empty($_SERVER['HTTP_USER_AGENT']) ? false : $_SERVER['HTTP_USER_AGENT'];
             $isBot = ( !$userAgent || preg_match(Cm_RedisSession_Model_Session::BOT_REGEX, $userAgent) );
-            if ($isBot) {
+            if ($isBot && !defined('CM_REDISSESSION_LOCKING_ENABLED')) {
                 define('CM_REDISSESSION_LOCKING_ENABLED', false);
             }
         }
