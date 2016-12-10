@@ -60,7 +60,7 @@
                             <label>HTTP Host Header</label>
                             <comment>Leave empty for automatic mode.</comment>
                             <frontend_type>text</frontend_type>
-                            <sort_order>25</sort_order>
+                            <sort_order>40</sort_order>
                             <show_in_default>1</show_in_default>
                             <depends>
                                 <enable_pass_cache_clean>1</enable_pass_cache_clean>
@@ -70,7 +70,7 @@
                             <label>API User</label>
                             <comment>Must have rights to SOAP Resource "MageHost Hosting => Clean Cache".</comment>
                             <frontend_type>text</frontend_type>
-                            <sort_order>30</sort_order>
+                            <sort_order>50</sort_order>
                             <show_in_default>1</show_in_default>
                             <depends>
                                 <enable_pass_cache_clean>1</enable_pass_cache_clean>
@@ -79,7 +79,7 @@
                         <api_key translate="label comment">
                             <label>API Key</label>
                             <frontend_type>password</frontend_type>
-                            <sort_order>40</sort_order>
+                            <sort_order>60</sort_order>
                             <show_in_default>1</show_in_default>
                             <depends>
                                 <enable_pass_cache_clean>1</enable_pass_cache_clean>
