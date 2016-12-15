@@ -15,7 +15,7 @@
 <config>
     <modules>
         <MageHost_Hosting>
-            <version>0.7.2</version>
+            <version>0.7.3</version>
         </MageHost_Hosting>
     </modules>
     <global>
@@ -78,6 +78,9 @@
                 <api_user>cluster</api_user>
                 <api_key>change_me</api_key>
             </cluster>
+            <improvements>
+                <enable_cm_redissession_bot_locking_fix>1</enable_cm_redissession_bot_locking_fix>
+            </improvements>
         </magehost_hosting>
     </default>
 </config>

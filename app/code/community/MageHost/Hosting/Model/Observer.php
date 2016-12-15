@@ -162,11 +162,13 @@ class MageHost_Hosting_Model_Observer
      * @param Varien_Event_Observer $observer
      */
     function controllerFrontInitBefore( /** @noinspection PhpUnusedParameterInspection */ Varien_Event_Observer $observer ) {
-        if (Mage::helper('core')->isModuleEnabled('Cm_RedisSession')) {
-            $userAgent = empty($_SERVER['HTTP_USER_AGENT']) ? false : $_SERVER['HTTP_USER_AGENT'];
-            $isBot = ( !$userAgent || preg_match(Cm_RedisSession_Model_Session::BOT_REGEX, $userAgent) );
-            if ($isBot && !defined('CM_REDISSESSION_LOCKING_ENABLED')) {
-                define('CM_REDISSESSION_LOCKING_ENABLED', false);
+        if ( Mage::getStoreConfigFlag(self::CONFIG_SECTION.'/improvements/enable_cm_redissession_bot_locking_fix') ) {
+            if (Mage::helper('core')->isModuleEnabled('Cm_RedisSession')) {
+                $userAgent = empty($_SERVER['HTTP_USER_AGENT']) ? false : $_SERVER['HTTP_USER_AGENT'];
+                $isBot = ( !$userAgent || preg_match(Cm_RedisSession_Model_Session::BOT_REGEX, $userAgent) );
+                if ($isBot && !defined('CM_REDISSESSION_LOCKING_ENABLED')) {
+                    define('CM_REDISSESSION_LOCKING_ENABLED', false);
+                }
             }
         }
     }
