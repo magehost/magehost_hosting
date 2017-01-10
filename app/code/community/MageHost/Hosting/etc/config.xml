@@ -15,7 +15,7 @@
 <config>
     <modules>
         <MageHost_Hosting>
-            <version>0.7.3</version>
+            <version>0.7.4</version>
         </MageHost_Hosting>
     </modules>
     <global>
