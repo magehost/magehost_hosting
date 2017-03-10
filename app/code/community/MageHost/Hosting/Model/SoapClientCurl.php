@@ -79,7 +79,7 @@ class MageHost_Hosting_Model_SoapClientCurl extends SoapClient
         if (!empty($this->curl_errorno)) {
             $errMsg = sprintf("%s:%s ERROR %d doing SOAP request: %s",
                               __CLASS__, __FUNCTION__, $this->curl_errorno, $this->curl_errormsg);
-            Mage::log($errMsg, Zend_log::ERR);
+            Mage::helper('magehost_hosting')->log($errMsg, Zend_log::ERR);
         }
 
         return ($one_way) ? null : $response;
