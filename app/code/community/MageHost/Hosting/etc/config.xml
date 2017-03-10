@@ -70,6 +70,10 @@
     </adminhtml>
     <default>
         <magehost_hosting>
+            <general>
+                <debug_enabled>0</debug_enabled>
+                <log_file>magehost.log</log_file>
+            </general>
             <cluster>
                 <enable_pass_cache_clean>0</enable_pass_cache_clean>
                 <http_nodes>node.domain.tld:443</http_nodes>

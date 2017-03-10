@@ -28,12 +28,12 @@ class MageHost_Hosting_Model_Api extends Mage_Api_Model_Resource_Abstract
         $result = false;
         /** @noinspection PhpUndefinedMethodInspection */
         $localHostname = Mage::helper('magehost_hosting')->getLocalHostname();
-        Mage::log( sprintf( "Cache Clean Received from '%s' via API. Mode '%s', tags '%s'",
+        Mage::helper('magehost_hosting')->log( sprintf( "Cache Clean Received from '%s' via API. Mode '%s', tags '%s'",
                             $fromHostname, $mode, implode(',',$tags) ) );
         if ( $fromHostname == $localHostname ) {
             $result = true;
             $message = sprintf("Ignoring cache clean because I am '%s'.",$localHostname);
-            Mage::log( $message );
+            Mage::helper('magehost_hosting')->log( $message );
         } else {
             Mage::register('MageHost_cacheClean_via_Api',true);
             try {
@@ -41,12 +41,12 @@ class MageHost_Hosting_Model_Api extends Mage_Api_Model_Resource_Abstract
                 $result = Mage::app()->getCacheInstance()->getFrontEnd()->getBackend()->clean($mode, $tags);
                 if ( !$result ) {
                     $message = sprintf("%s::%s: Clean command returned '%s'.", __CLASS__, __FUNCTION__, $result);
-                    Mage::log( $message );
+                    Mage::helper('magehost_hosting')->log( $message );
                     $this->_fault('command_failed', $message);
                 }
             } catch (Mage_Core_Exception $e) {
                 $message = sprintf("%s::%s: ERROR %s", __CLASS__, __FUNCTION__, $e->getMessage());
-                Mage::log( $message );
+                Mage::helper('magehost_hosting')->log( $message );
                 $this->_fault('command_failed', $message);
             }
         }

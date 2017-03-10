@@ -95,4 +95,17 @@ class MageHost_Hosting_Helper_Data extends Mage_Core_Helper_Abstract {
             Mage::getSingleton( 'adminhtml/session' )->addError( $message );
         }
     }
+
+    /**
+     * Function for writing messages to log-file, if debugging is enabled
+     *
+     * @param string $message
+     * @param int $level
+     */
+    public function log($message, $level = Zend_Log::DEBUG)
+    {
+        if (Mage::getStoreConfig('magehost_hosting/general/debug_enabled') || $level <= Zend_Log::WARN) {
+            Mage::log($message, $level, Mage::getStoreConfig('magehost_hosting/general/log_file'));
+        }
+    }
 }

@@ -70,7 +70,7 @@ class MageHost_Hosting_Model_Observer
             /** @noinspection PhpUndefinedMethodInspection */
             $transport = $observer->getTransport();
             /** @noinspection PhpUndefinedMethodInspection */
-            Mage::log( sprintf( "Cache Clean Event. Mode '%s', tags '%s'.",
+            Mage::helper('magehost_hosting')->log( sprintf( "Cache Clean Event. Mode '%s', tags '%s'.",
                 $transport->getMode(), implode(',',$transport->getTags()) ) );
             $nodes = Mage::getStoreConfig(self::CONFIG_SECTION.'/cluster/http_nodes');
             $url = '';
@@ -138,7 +138,7 @@ class MageHost_Hosting_Model_Observer
                 $options = array( 'uri' => 'urn:Magento',
                                   'location' => $nodeLocation,
                                   'curl_headers' => $headers );
-                Mage::log( sprintf("%s::%s: Passing flush to '%s' with headers '%s'",
+                Mage::helper('magehost_hosting')->log( sprintf("%s::%s: Passing flush to '%s' with headers '%s'",
                                    __CLASS__, __FUNCTION__, $nodeLocation, implode(' + ',$headers)), Zend_Log::INFO );
                 try {
                     $client = new MageHost_Hosting_Model_SoapClientCurl(null,$options);
@@ -148,7 +148,7 @@ class MageHost_Hosting_Model_Observer
                     $client->call( $sessionId, 'magehost_hosting.cacheClean',
                                    array( $transport->getMode(), $transport->getTags(), $localHostname) );
                 } catch ( Exception $e ) {
-                    Mage::log( sprintf("%s::%s: ERROR during SOAP request: %s", __CLASS__, __FUNCTION__, $e->getMessage()) );
+                    Mage::helper('magehost_hosting')->log( sprintf("%s::%s: ERROR during SOAP request: %s", __CLASS__, __FUNCTION__, $e->getMessage()) );
                 }
             }
         }
