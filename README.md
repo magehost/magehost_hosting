@@ -1,4 +1,5 @@
 # MagentoHosting.pro Magento Extension
+The application side of the high performance Magento Hosting by MagentoHosting.pro
 
 * [Functionality](#functionality)
 * [Installation](#installation)
