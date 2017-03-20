@@ -1,0 +1,16 @@
+{
+  "name":"magehost/magehost_hosting",
+  "type":"magento-module",
+  "license":"GPL-3.0",
+
+  "description":"MageHost_RewriteFix: Solves a problem most big ‪#‎Magento‬ 1.x shops face: an ever growing huge URL Rewrite table.",
+  "authors":[
+    {
+      "name":"MagentoHosting.pro - Jeroen Vermeulen",
+      "email":"jeroen@magehost.pro"
+    }
+  ],
+  "require":{
+    "magento-hackathon/magento-composer-installer":"*"
+  }
+}
