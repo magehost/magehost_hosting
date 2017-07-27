@@ -69,9 +69,11 @@ class MageHost_Hosting_Model_Observer
             $localHostname = Mage::helper('magehost_hosting')->getLocalHostname();
             /** @noinspection PhpUndefinedMethodInspection */
             $transport = $observer->getTransport();
+            $tags = $observer->getTransport()->getTags();
+            $tags = array_unique($tags); // Remove duplicates
             /** @noinspection PhpUndefinedMethodInspection */
             Mage::helper('magehost_hosting')->log( sprintf( "Cache Clean Event. Mode '%s', tags '%s'.",
-                $transport->getMode(), implode(',',$transport->getTags()) ) );
+                $transport->getMode(), implode(',',$tags) ) );
             $nodes = Mage::getStoreConfig(self::CONFIG_SECTION.'/cluster/http_nodes');
             $url = '';
             // Protection against occasional crash while trying to get API url during n98-magerun usage
@@ -146,7 +148,7 @@ class MageHost_Hosting_Model_Observer
                     $sessionId =  $client->login( $apiUser, $apiKey );
                     /** @noinspection PhpUndefinedMethodInspection */
                     $client->call( $sessionId, 'magehost_hosting.cacheClean',
-                                   array( $transport->getMode(), $transport->getTags(), $localHostname) );
+                                   array( $transport->getMode(), $tags, $localHostname) );
                 } catch ( Exception $e ) {
                     Mage::helper('magehost_hosting')->log( sprintf("%s::%s: ERROR during SOAP request: %s", __CLASS__, __FUNCTION__, $e->getMessage()) );
                 }
